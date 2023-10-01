@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'CalendarApp'
-include('app')
+include('app', 'terminalgrid', 'api', 'repeatPlugin', 'notifyPlugin')
