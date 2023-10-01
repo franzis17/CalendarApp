@@ -1,4 +1,4 @@
-package calendarapp;
+package calendarapp.terminalgrid;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
