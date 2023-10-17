@@ -3,7 +3,7 @@ package calendarapp.app;
 public class App {
 
     public static void main(String[] args) {
-        // test();
+        //test();
         CalendarUI ui = new CalendarUI();
         ui.display();
     }
