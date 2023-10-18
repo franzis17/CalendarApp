@@ -5,7 +5,8 @@ public class App
     public static void main(String[] args)
     {
         //test();
-        CalendarUI ui = new CalendarUI();
+        CalendarHandler calendar = new CalendarHandler();
+        CalendarUI ui = new CalendarUI(calendar);
         ui.display();
     }
     
