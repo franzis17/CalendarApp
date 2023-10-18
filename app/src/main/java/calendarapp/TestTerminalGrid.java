@@ -7,9 +7,10 @@ import calendarapp.terminalgrid.TerminalGrid;
 import java.util.*;
 
 
-public class TestTerminalGrid {
-    
-    public static void start() {
+public class TestTerminalGrid
+{    
+    public static void start()
+    {
         // Demonstration data
         String[][] messages = {{"one two three",     "four five six",             "seven eight nine"}, 
                                {"ten eleven twelve", "thirteen fourteen fifteen", "sixteen seventeen eighteen"}};

@@ -1,6 +1,6 @@
 package calendarapp.app;
 
-public class HandleCalendarEvents
+public class RowEvents
 {
         
 }

@@ -11,12 +11,14 @@ import java.time.format.DateTimeFormatter;
 /**
  * Displays a calendar that shows 7 days from now and events happening within the days.
  */
-public class CalendarUI {
-
-    public void display() {
+public class CalendarUI
+{
+    public void display()
+    {
         String[] columnDates = getNextSevenDays();
         String[] rowEventTimes = {"12 AM", "1 AM"};
-        String[][] rowEventContents = {
+        String[][] rowEventContents =
+        {
             {"", "a_two", "a_three", "a_four", "a_five", "a_six", "a_seven"},  // row1
             {"b_one", "b_two", "b_three", "b_four", "b_five", "b_six", "b_seven"},  // row2
         };
@@ -29,12 +31,16 @@ public class CalendarUI {
         terminalGrid.print(rowEventContents, rowEventTimes, columnDates);
         System.out.println();
     }
+    
+    
+    // Check if any events exist in the 7 days and list them within the 
 
     /**
      * Starting from the current date, get all 7 days to display.
      * These dates will be displayed in the columns of the calendar.
      */
-    public String[] getNextSevenDays() {
+    public String[] getNextSevenDays()
+    {
         String[] columnDates = new String[7];
         
         LocalDate currentDate = LocalDate.now();
@@ -42,7 +48,8 @@ public class CalendarUI {
         System.out.println("Original Format (of Current date) = " + currentDate);
         
         // Add the other 7 days from now
-        for (int i = 0; i < 7; i++) {
+        for(int i = 0; i < 7; i++)
+        {
             String formattedDate = currentDate.format(dmyFormat);
             columnDates[i] = formattedDate;
             
@@ -51,7 +58,8 @@ public class CalendarUI {
         }
         
         int date_i = 1;
-        for (String date : columnDates) {
+        for(String date : columnDates)
+        {
             //System.out.println(date_i + ". Date = " + date);
             date_i++;
         }

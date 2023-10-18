@@ -1,6 +1,6 @@
 package calendarapp.api;
 
-public class Api
+public interface ScriptsAPI
 {
     
 }
