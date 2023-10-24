@@ -2,6 +2,8 @@ package calendarapp.app;
 
 // package dependencies
 import calendarapp.terminalgrid.TerminalGrid;
+import calendarapp.app.Event.AllDayEvent;
+import calendarapp.app.Event.HourlyEvent;
 
 // external dependencies
 import java.util.*;
@@ -23,14 +25,34 @@ public class CalendarUI
     
     public void display()
     {
-        LocalDate[] sevenDates = DateUtility.getNextSevenDays();
-        String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDates);
+        // [TEST] - Add a mock event to test how to map the event
+        Event newEvent = new AllDayEvent(
+            LocalDate.of(2023, 10, 27), 
+            "Meeting 1"
+        );
+        System.out.println("Event to add:\n" + 
+            " Date = " + newEvent.getDate() + "\n" +
+            "Title = " + newEvent.getTitle()
+        );
+        calendar.addEvent(newEvent);
+        
+        
+        LocalDate[] sevenDays = DateUtility.getNextSevenDays();
+        HashMap<String, EventRow> timeMap = calendar.findEventsInGivenDays(sevenDays);
+        timeMap.forEach((timeKey, eventRowValue) ->
+        {
+            String[] eventsArr = eventRowValue.getEvents();
+            String events = String.join("", eventsArr);
+            
+            System.out.println("Time = " + timeKey + "\nEvents = " + events);
+        });
+        
+        // TO DO:
+        // 1. Turn the timeMap into rows to be displayed
+        
+        
+        String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
         String[] eventTimes = {"All-day", "12 AM", "1 AM"};
-        // String[][] rowEventContents =
-        // {
-        //     {"", "a_two", "a_three", "a_four", "a_five", "a_six", "a_seven"},  // row1
-        //     {"b_one", "b_two", "b_three", "b_four", "b_five", "b_six", "b_seven"},  // row2
-        // };
         String[][] rowEventContents =
         {
             {"", "", "", "", "", "", ""},  // row-1

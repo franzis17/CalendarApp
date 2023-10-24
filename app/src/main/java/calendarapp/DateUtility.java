@@ -7,12 +7,7 @@ public class DateUtility
 {
     private static DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     
-    public static LocalDate getCurrentDate_Raw()
-    {
-        return LocalDate.now();
-    }
-    
-    public static String getCurrentDate_String()
+    public static String getStrCurrentDate_dmyFormat()
     {
         return LocalDate.now().format(dmyFormat);
     }
@@ -48,7 +43,7 @@ public class DateUtility
     }
 
 
-    /* [ Formatting Date ] */
+    // [ Formatting Date ]
 
     public static String formatDateToString(LocalDate date)
     {
