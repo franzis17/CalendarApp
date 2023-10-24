@@ -2,26 +2,16 @@ package calendarapp.app;
 
 public class EventRow
 {
-    private String title;
+    private int time;
+    private String[] events = new String[7];
     
-    public EventRow(String title)
+    public EventRow(int time)
     {
-        this.title = title;
+        this.time = time;
     }
     
-    
-    /* [GETTERS] */
-    
-    public String getTitle()
+    public String[] getEvents()
     {
-        return title;
-    }
-    
-    
-    /* [SETTERS] */
-    
-    public void setTitle(String title)
-    {
-        this.title = title;
+        return events;
     }
 }

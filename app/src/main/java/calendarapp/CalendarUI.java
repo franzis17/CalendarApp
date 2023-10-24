@@ -23,8 +23,9 @@ public class CalendarUI
     
     public void display()
     {
-        String[] columnDates = getNextSevenDays();
-        String[] eventTimes = {"12 AM", "1 AM"};
+        LocalDate[] sevenDates = DateUtility.getNextSevenDays();
+        String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDates);
+        String[] eventTimes = {"All-day", "12 AM", "1 AM"};
         // String[][] rowEventContents =
         // {
         //     {"", "a_two", "a_three", "a_four", "a_five", "a_six", "a_seven"},  // row1
@@ -32,8 +33,9 @@ public class CalendarUI
         // };
         String[][] rowEventContents =
         {
-            {"", "", "", "", "", "", ""},  // row1
-            {"", "", "", "", "", "", ""},  // row2
+            {"", "", "", "", "", "", ""},  // row-1
+            {"", "", "", "", "", "", ""},  // row-2
+            {"", "", "", "", "", "", ""},  // row-3
         };
         
         // Initialise Terminal Grid
@@ -45,8 +47,13 @@ public class CalendarUI
         System.out.println();
     }
     
-    
-    // Check if any events exist in the 7 days and list them within the rows
+    /** 
+     * Check if any events exist in the 7 days and list them within the rows
+     */
+    public void checkForEvents()
+    {
+        
+    }
 
     /**
      * Starting from the current date, get all 7 days to display.
@@ -70,13 +77,6 @@ public class CalendarUI
             currentDate = currentDate.plusDays(1);
         }
         
-        int date_i = 1;
-        for(String date : columnDates)
-        {
-            //System.out.println(date_i + ". Date = " + date);
-            date_i++;
-        }
-        
         return columnDates;
     }
     
@@ -92,10 +92,10 @@ public class CalendarUI
     public void handleSearch()
     {
         // 1. Grab user input
-        String searchInput = "christmas";
+        String searchInput = "christmas";  // TBD: make a search input
 
         // 2. Find the searchInput in the calendar
-        EventRow eventSearched = calendar.searchEvent(searchInput);
+        Event eventSearched = calendar.searchEvent(searchInput);
         
         if(eventSearched == null)
         {
