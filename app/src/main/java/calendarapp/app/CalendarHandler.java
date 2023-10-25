@@ -7,23 +7,42 @@ import calendarapp.app.Event.HourlyEvent;
 // external dependencies
 import java.util.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Contains all events in the Calendar, and operations these events.
  */
 public class CalendarHandler
 {
-    private static final String ALL_DAY = "all-day";
+    private static final int ALLDAY_TIME = -1;
     
     private List<Event> events = new ArrayList<>();
-    private HashMap<String, EventRow> timeMap = new HashMap<>();
+    private HashMap<Integer, EventRow> timeMap = new HashMap<>();
     
     public CalendarHandler()
     {
-        // Pre-initialise the all-day event row
-        timeMap.put(ALL_DAY, new EventRow(ALL_DAY));
+        initialiseTimes();
     }
     
+    /**
+     * Map each time (0 - 23) to an "EventRow". EventRow contains the events happening on that
+     * time, with the column being the date of the event.
+     * 
+     * It is initialised so that all-day events are in the first row and then the hourly events
+     * are automatically ordered from 0 to 23.
+     */
+    private void initialiseTimes() throws IllegalArgumentException
+    {
+        // Initialise all-day event row
+        timeMap.put(ALLDAY_TIME, new EventRow(ALLDAY_TIME));
+        
+        // Initialise hourly event rows
+        for(int i = 0; i < 24; i++)
+        {
+            timeMap.put(i, new EventRow(i));
+        }
+    }
+
 
     public void addEvent(Event event)
     {
@@ -32,63 +51,58 @@ public class CalendarHandler
         {
             throw new NullPointerException("Event cannot be null when adding it");
         }
+        System.out.println("+ Event:\n" + 
+            "\t Date = " + event.getDate() + "\n" +
+            "\tTitle = " + event.getTitle()
+        );
         events.add(event);
     }
+    
+    public void addAllDayEvent(LocalDate date, String title)
+    {
+        events.add(new AllDayEvent(date, title));
+    }
+    
+    public void addHourlyEvent(LocalDate date, String title, LocalTime startTime, int durationMins)
+    {
+        events.add(new HourlyEvent(date, title, startTime, durationMins));
+    }
+
 
     /**
      * Check if there are any events within the 7 days requested.
      */
-    public HashMap<String, EventRow> findEventsInGivenDays(LocalDate[] dates)
+    public HashMap<Integer, EventRow> findEventsInGivenDays(LocalDate[] dates)
     {
-        System.out.println("> Finding events that are happening in seven days");
+        System.out.println(">>> Finding events that are happening in seven days...");
 
         // Find all events that are happening in the given days
         for(Event event : events)
         {
             LocalDate eventDate = event.getDate();
             String eventTitle = event.getTitle();
-
-            System.out.println("+ Event:\n" + 
-                "\tTitle = " + eventTitle + "\n" +
-                "\t Date = " + eventDate
-            );
             
             for(int i = 0; i < dates.length; i++)
             {
                 // Check if the event equals to one of the seven days
                 if(eventDate.equals(dates[i]))
                 {
-                    System.out.println("> The event is happening on the seven days.\n" +
-                        "Event Date = " + eventDate + "\n" +
-                        "  dates["+i+"] = " + dates[i]
+                    System.out.println("i. Event:\n" + 
+                        "\t Date = " + eventDate + "\n" +
+                        "\tTitle = " + eventTitle
                     );
-                    // All-day events must be added to all-day event row AND
-                    // Hourly events must be mapped dynamically
                     if(event instanceof AllDayEvent)
                     {
-                        // add to all-day event row
-                        EventRow eventRow = timeMap.get(ALL_DAY);
+                        EventRow eventRow = timeMap.get(ALLDAY_TIME);
                         eventRow.addEvent(i, eventTitle);
                     }
                     else if(event instanceof HourlyEvent)
                     {
                         HourlyEvent hourlyEvent = (HourlyEvent)event;
-                        String timeStr = Integer.toString(hourlyEvent.getStartTime().getHour());
+                        int timeOfEvent = hourlyEvent.getStartTime().getHour();
                         
-                        if(timeMap.containsKey(timeStr))
-                        {
-                            // If time has already been mapped, simply append the event
-                            EventRow eventRow = timeMap.get(timeStr);
-                            eventRow.addEvent(i, eventTitle);
-                        }
-                        else
-                        {
-                            // Unmapped time must be mapped dynamically depending on the
-                            // Time of the event
-                            EventRow eventRow = new EventRow(timeStr);
-                            eventRow.addEvent(i, eventTitle);
-                            timeMap.put(timeStr, eventRow);
-                        }
+                        EventRow eventRow = timeMap.get(timeOfEvent);
+                        eventRow.addEvent(i, eventTitle);
                     }
                 }
             }
@@ -102,15 +116,17 @@ public class CalendarHandler
      * 
      * Searches all events starting from the current date and onwards (up to a year)
      * 
+     * @param   searchInput   the event title that the user is searching for
+     * 
      * @return  Event    the event that was searched
      */
-    public Event searchEvent(String searchEventInput)
+    public Event searchEvent(String searchInput)
     {
         for(Event event : events)
         {
             String eventTitle = event.getTitle().toLowerCase();
 
-            if(eventTitle.contains(searchEventInput.toLowerCase()))
+            if(eventTitle.contains(searchInput.toLowerCase()))
             {
                 // 1. output matching event details (of first match only)
                 return event;

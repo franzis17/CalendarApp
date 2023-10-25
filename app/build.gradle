@@ -16,7 +16,7 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
     
     
-    // -- subproject dependencies --
+    // [ subproject dependencies ]
     
     implementation project(':terminalgrid')
 }

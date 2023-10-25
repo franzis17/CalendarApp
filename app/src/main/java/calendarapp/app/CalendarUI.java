@@ -8,6 +8,7 @@ import calendarapp.app.Event.HourlyEvent;
 // external dependencies
 import java.util.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -25,56 +26,81 @@ public class CalendarUI
     
     public void display()
     {
-        // [TEST] - Add a mock event to test how to map the event
-        Event newEvent = new AllDayEvent(
+        // Info to display in the Calendar
+        LocalDate[] sevenDays = DateUtility.getNextSevenDays();
+        String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
+        String[] rowEventTimes = new String[25];          // Max 24 hours in a day
+        String[][] rowEventContents = new String[25][7];  // 30 rows(times), 7 columns(dates)
+        
+        
+        // [ START TEST]
+        // Add a mock event to test how to map the event
+        Event allDayEvent = new AllDayEvent(
             LocalDate.of(2023, 10, 27), 
             "Meeting 1"
         );
-        System.out.println("Event to add:\n" + 
-            " Date = " + newEvent.getDate() + "\n" +
-            "Title = " + newEvent.getTitle()
+        Event hourlyEvent = new HourlyEvent(
+            LocalDate.of(2023, 10, 27),
+            "One hour meeting",
+            LocalTime.of(13, 00),
+            60
         );
-        calendar.addEvent(newEvent);
+        Event hourlyEvent2 = new HourlyEvent(
+            LocalDate.of(2023, 10, 27),
+            "Buy pizza for meeting",
+            LocalTime.of(13, 00),
+            60
+        );
+        calendar.addEvent(allDayEvent);
+        calendar.addEvent(hourlyEvent);
+        calendar.addEvent(hourlyEvent2);
+        // [ END TEST ]
         
         
-        LocalDate[] sevenDays = DateUtility.getNextSevenDays();
-        HashMap<String, EventRow> timeMap = calendar.findEventsInGivenDays(sevenDays);
+        // Find events happening in seven days
+        int[] i_row = { 0 };
+        HashMap<Integer, EventRow> timeMap = calendar.findEventsInGivenDays(sevenDays);
         timeMap.forEach((timeKey, eventRowValue) ->
         {
-            String[] eventsArr = eventRowValue.getEvents();
-            String events = String.join("", eventsArr);
+            int eventTime = eventRowValue.getTime();
+            String timeToDisplay = "";
             
-            System.out.println("Time = " + timeKey + "\nEvents = " + events);
+            // Format the time to either AM or PM
+            if (eventTime == -1)
+            {
+                timeToDisplay = "All-Day";
+            }
+            else if (eventTime == 0)
+            {
+                timeToDisplay = "12 AM";
+            }
+            else if(eventTime < 12)
+            {
+                timeToDisplay = eventTime + " AM";
+            }
+            else if(eventTime == 12)
+            {
+                timeToDisplay = "12 PM";
+            }
+            else
+            {
+                timeToDisplay = (eventTime - 12) + " PM";
+            }
+
+            String[] eventsArr = eventRowValue.getEvents();
+            rowEventTimes[i_row[0]] = timeToDisplay;
+            rowEventContents[i_row[0]] = eventsArr;
+            i_row[0]++;
         });
         
-        // TO DO:
-        // 1. Turn the timeMap into rows to be displayed
-        
-        
-        String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
-        String[] eventTimes = {"All-day", "12 AM", "1 AM"};
-        String[][] rowEventContents =
-        {
-            {"", "", "", "", "", "", ""},  // row-1
-            {"", "", "", "", "", "", ""},  // row-2
-            {"", "", "", "", "", "", ""},  // row-3
-        };
         
         // Initialise Terminal Grid
         var terminalGrid = TerminalGrid.create();
         terminalGrid.setTerminalWidth(200);
         
         // Print out the Calendar
-        terminalGrid.print(rowEventContents, eventTimes, columnDates);
+        terminalGrid.print(rowEventContents, rowEventTimes, columnDates);
         System.out.println();
-    }
-    
-    /** 
-     * Check if any events exist in the 7 days and list them within the rows
-     */
-    public void checkForEvents()
-    {
-        
     }
 
     /**
