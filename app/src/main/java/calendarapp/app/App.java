@@ -8,6 +8,7 @@ public class App
         try
         {
             CalendarHandler calendar = new CalendarHandler();
+            CalendarControls calControls = new CalendarControls(calendar);
             CalendarUI ui = new CalendarUI(calendar);
             ui.display();
         }

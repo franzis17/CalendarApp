@@ -23,7 +23,6 @@ public class CalendarUI
         this.calendar = calendar;
     }
     
-    
     public void display()
     {
         // Info to display in the Calendar

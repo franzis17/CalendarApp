@@ -4,8 +4,6 @@ package calendarapp.app;
 import calendarapp.app.Event.AllDayEvent;
 import calendarapp.app.Event.HourlyEvent;
 
-import calendarapp.api.CalendarAPI;
-
 // external dependencies
 import java.util.*;
 import java.time.LocalDate;
@@ -14,7 +12,7 @@ import java.time.LocalTime;
 /**
  * Contains all events in the Calendar, and operations these events.
  */
-public class CalendarHandler implements CalendarAPI
+public class CalendarHandler
 {
     private static final int ALLDAY_TIME = -1;
     
@@ -58,18 +56,6 @@ public class CalendarHandler implements CalendarAPI
             "\tTitle = " + event.getTitle()
         );
         events.add(event);
-    }
-    
-    @Override
-    public void addAllDayEvent(LocalDate date, String title)
-    {
-        events.add(new AllDayEvent(date, title));
-    }
-    
-    @Override
-    public void addHourlyEvent(LocalDate date, String title, LocalTime startTime, int durationMins)
-    {
-        events.add(new HourlyEvent(date, title, startTime, durationMins));
     }
 
 
