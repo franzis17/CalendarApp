@@ -17,8 +17,8 @@ dependencies {
     
     
     // [ subproject dependencies ]
-    
     implementation project(':terminalgrid')
+    implementation project(':api')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

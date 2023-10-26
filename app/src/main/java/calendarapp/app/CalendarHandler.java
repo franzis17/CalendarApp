@@ -4,6 +4,8 @@ package calendarapp.app;
 import calendarapp.app.Event.AllDayEvent;
 import calendarapp.app.Event.HourlyEvent;
 
+import calendarapp.api.CalendarAPI;
+
 // external dependencies
 import java.util.*;
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ import java.time.LocalTime;
 /**
  * Contains all events in the Calendar, and operations these events.
  */
-public class CalendarHandler
+public class CalendarHandler implements CalendarAPI
 {
     private static final int ALLDAY_TIME = -1;
     
@@ -25,7 +27,7 @@ public class CalendarHandler
     }
     
     /**
-     * Map each time (0 - 23) to an "EventRow". EventRow contains the events happening on that
+     * Map each time (from 0 - 23) to an "EventRow". EventRow contains the events happening on that
      * time, with the column being the date of the event.
      * 
      * It is initialised so that all-day events are in the first row and then the hourly events
@@ -58,11 +60,13 @@ public class CalendarHandler
         events.add(event);
     }
     
+    @Override
     public void addAllDayEvent(LocalDate date, String title)
     {
         events.add(new AllDayEvent(date, title));
     }
     
+    @Override
     public void addHourlyEvent(LocalDate date, String title, LocalTime startTime, int durationMins)
     {
         events.add(new HourlyEvent(date, title, startTime, durationMins));
@@ -79,38 +83,46 @@ public class CalendarHandler
         // Find all events that are happening in the given days
         for(Event event : events)
         {
-            LocalDate eventDate = event.getDate();
-            String eventTitle = event.getTitle();
-            
+            // Loop all seven days to check if the event is happening on one of the 7 days
             for(int i = 0; i < dates.length; i++)
             {
-                // Check if the event equals to one of the seven days
-                if(eventDate.equals(dates[i]))
-                {
-                    System.out.println("i. Event:\n" + 
-                        "\t Date = " + eventDate + "\n" +
-                        "\tTitle = " + eventTitle
-                    );
-                    if(event instanceof AllDayEvent)
-                    {
-                        EventRow eventRow = timeMap.get(ALLDAY_TIME);
-                        eventRow.addEvent(i, eventTitle);
-                    }
-                    else if(event instanceof HourlyEvent)
-                    {
-                        HourlyEvent hourlyEvent = (HourlyEvent)event;
-                        int timeOfEvent = hourlyEvent.getStartTime().getHour();
-                        
-                        EventRow eventRow = timeMap.get(timeOfEvent);
-                        eventRow.addEvent(i, eventTitle);
-                    }
-                }
+                addIfEventIsHappeningInGivenDay(event, dates[i], i);
             }
         }
         
         return timeMap;
     }
     
+    private void addIfEventIsHappeningInGivenDay(Event event, LocalDate date, int dateIndex)
+    {
+        LocalDate eventDate = event.getDate();
+        String eventTitle = event.getTitle();
+
+        if(eventDate.equals(date))
+        {
+            System.out.println("i. Event:\n" + 
+                "\t Date = " + eventDate + "\n" +
+                "\tTitle = " + eventTitle
+            );
+            if(event instanceof AllDayEvent)
+            {
+                // Add the event in the all-day event row
+                EventRow eventRow = timeMap.get(ALLDAY_TIME);
+                eventRow.addEvent(dateIndex, eventTitle);
+            }
+            else if(event instanceof HourlyEvent)
+            {
+                // Add the event depending on its time
+                HourlyEvent hourlyEvent = (HourlyEvent)event;
+                int timeOfEvent = hourlyEvent.getStartTime().getHour();
+                
+                EventRow eventRow = timeMap.get(timeOfEvent);
+                eventRow.addEvent(dateIndex, eventTitle);
+            }
+        }
+    }
+
+
     /**
      * [ Search an Event ]
      * 

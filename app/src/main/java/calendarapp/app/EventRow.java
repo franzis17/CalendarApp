@@ -40,12 +40,12 @@ public class EventRow
     /**
      * Add the event title on the appropriate column date it is meant to be displayed at
      * 
-     * @param   i           the column index the event should be displayed in
+     * @param   dateIndex   the column index the event should be displayed in
      * @param   eventTitle  the title of the event
      */
-    public void addEvent(int i, String eventTitle)
+    public void addEvent(int dateIndex, String eventTitle)
     {
-        events[i] = events[i] + "- " + eventTitle + "\n";
+        events[dateIndex] = events[dateIndex] + "- " + eventTitle + "\n";
     }
     
     

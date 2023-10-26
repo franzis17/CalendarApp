@@ -12,6 +12,4 @@ public class Repeat implements PluginsAPI
     {
         this.calendarAPI = calendarAPI;
     }
-    
-    
 }
