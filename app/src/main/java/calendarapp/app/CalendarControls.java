@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * This class implements the CalendarAPI to allow Plugins to call any methods within this class.
+ * This class implements the CalendarAPI to allow Plugins to use the Main App's functions that is 
+ * specified within this class.
  */
 public class CalendarControls implements CalendarAPI
 {

@@ -8,7 +8,9 @@ public class App
         try
         {
             CalendarHandler calendar = new CalendarHandler();
-            CalendarControls calControls = new CalendarControls(calendar);
+            CalendarControls controlAPI = new CalendarControls(calendar);
+            PluginHandler pluginHandler = new PluginHandler(controlAPI);
+            // pluginHandler.loadPlugins();
             CalendarUI ui = new CalendarUI(calendar);
             ui.display();
         }

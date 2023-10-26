@@ -7,10 +7,11 @@ import java.util.*;
 public class PluginHandler
 {
     private List<PluginsAPI> plugins = new ArrayList<>();
+    private CalendarControls controlAPI;
     
-    public PluginHandler()
+    public PluginHandler(CalendarControls controlAPI)
     {
-        
+        this.controlAPI = controlAPI;
     }
     
     public void loadPlugins()
