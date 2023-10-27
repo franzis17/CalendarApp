@@ -1,10 +1,17 @@
 package calendarapp.app;
 
+import calendarapp.app.testapp.*;
+
 public class App
 {
     public static void main(String[] args)
     {
-        //test();
+        // runCalendarApp();
+        test();
+    }
+    
+    public static void runCalendarApp()
+    {
         try
         {
             CalendarHandler calendar = new CalendarHandler();
@@ -28,6 +35,7 @@ public class App
     
     public static void test()
     {
-        TestTerminalGrid.start();
+        TestDate testDate = new TestDate();
+        testDate.main();
     }
 }
