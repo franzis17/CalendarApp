@@ -6,6 +6,12 @@ public class App
 {
     public static void main(String[] args)
     {
+        // if(args.length == 0)
+        // {
+        //     System.out.println("NOTE: Unable to start the application, please provide a file name as an argument.");
+        //     return;
+        // }
+        
         // runCalendarApp();
         test();
     }
