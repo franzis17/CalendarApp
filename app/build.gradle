@@ -42,7 +42,7 @@ javacc {
         createmyparser {
             inputFile = file('src/main/jj/calendarapp/app/FileParser.jj')
             packageName = 'calendarapp.app'
-            //lookahead = '2'
+            lookahead = '2'
         }
     }
 }

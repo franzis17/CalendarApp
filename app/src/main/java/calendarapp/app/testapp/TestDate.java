@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 public class TestDate
 {
-    public void main()
+    public static void runTest()
     {
-        dateRepetition();
+        TestDate testDate = new TestDate();
+        testDate.dateRepetition();
+        testDate.addYearToDate();
+        testDate.dateIsBefore();
     }
-    
     
     /**
      * Test repeating dates for a year
@@ -38,6 +40,7 @@ public class TestDate
     
     public void addYearToDate()
     {
+        System.out.println(">>> Test add year to date...");
         LocalDate givenDate = LocalDate.of(2023, 10, 10);
         LocalDate oneYearAfter = givenDate.plusYears(1);
         
@@ -47,6 +50,7 @@ public class TestDate
     
     public void dateIsBefore()
     {
+        System.out.println(">>> Test date is before...");
         LocalDate date1 = LocalDate.of(2023, 10, 10);
         LocalDate date2 = date1.plusYears(1);
         

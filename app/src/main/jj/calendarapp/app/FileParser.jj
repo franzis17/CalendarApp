@@ -38,13 +38,13 @@ TOKEN : {
 |   < TIME: <NUM> (<NUM>)* ":" <NUM> (<NUM>)* ":" <NUM> (<NUM>)* >
 |   < DURATION: (<NUM>)+ >
 |   < STRING: "\"" (~["\""])* "\"" >
+|   < ALL_DAY: "all-day" >
 
     // Plugins
 |   < PLUGIN: "plugin" >
 |   < KEY: (["a"-"z", "A"-"Z", "0"-"9", "_"])+ >
 |   < OPEN_BRACE: "{" >
 |   < CLOSE_BRACE: "}" >
-
 |   < IDENTIFIER: (["a"-"z", "A"-"Z", "_", "$"]) (["a"-"z", "A"-"Z", "_", "$", "0"-"9"])* >
 |   < PLUGIN_PACKAGE_NAME: <IDENTIFIER> ( "." <IDENTIFIER>)* >
 }
@@ -66,28 +66,53 @@ void parseFile() :
  */
 void ParseEvent() :
 {
-    // Event fields
-    Token dateToken, timeToken, titleToken, durationToken;
-    String date, time, title;
-    int duration;
 }
 {
     {
         System.out.println("\n> Parsing event...");
     }
-    
-    <EVENT> dateToken=<DATE> timeToken=<TIME> durationToken=<DURATION> titleToken=<STRING>
+    <EVENT>
+    ( AllDayEvent() | HourlyEvent() )
+}
+
+void AllDayEvent() :
+{
+    Token dateToken, titleToken;
+    String date, title;
+}
+{
+    dateToken=<DATE> <ALL_DAY> titleToken=<STRING>
+    {
+        date = dateToken.image;
+        title = StringUtility.removeFirstAndLastChar(titleToken.image);
+        System.out.println("All-Day Event:\n" +
+            "   date = " + date + "\n" +
+            "  title = " + title
+        );
+        // add all day event
+    }
+}
+
+void HourlyEvent() :
+{
+    Token dateToken, timeToken, titleToken, durationToken;
+    String date, time, title;
+    int duration;
+}
+{
+    dateToken=<DATE> timeToken=<TIME> durationToken=<DURATION> titleToken=<STRING>
     {
         date = dateToken.image;
         time = timeToken.image;
         duration = Integer.parseInt(durationToken.image);
         title = StringUtility.removeFirstAndLastChar(titleToken.image);
-        System.out.println("Event:\n" + 
-            "    date = " + date + "\n" +
-            "    time = " + time + "\n" +
-            "duration = " + duration + "\n" +
-            "   title = " + title
+        System.out.println("Hourly Event:\n" + 
+            "      date = " + date + "\n" +
+            "      time = " + time + "\n" +
+            "  duration = " + duration + "\n" +
+            "     title = " + title
         );
+        // add hourly event
     }
 }
 
@@ -96,7 +121,6 @@ void ParseEvent() :
  */
 void ParsePlugin() :
 {
-    // Plugin Fields
     Token pluginIDToken, keyToken, valueToken;
     String pluginID, key, value;
 }
