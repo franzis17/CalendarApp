@@ -5,7 +5,7 @@ import calendarapp.terminalgrid.TerminalGrid;
 import calendarapp.app.Event.AllDayEvent;
 import calendarapp.app.Event.HourlyEvent;
 
-// external dependencies
+// external dependencies 
 import java.util.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,28 +32,7 @@ public class CalendarUI
         String[][] rowEventContents = new String[25][7];  // 30 rows(times), 7 columns(dates)
         
         
-        // [ START TEST]
-        // Add a mock event to test how to map the event
-        Event allDayEvent = new AllDayEvent(
-            LocalDate.of(2023, 10, 27), 
-            "Meeting 1"
-        );
-        Event hourlyEvent = new HourlyEvent(
-            LocalDate.of(2023, 10, 27),
-            "One hour meeting",
-            LocalTime.of(13, 00),
-            60
-        );
-        Event hourlyEvent2 = new HourlyEvent(
-            LocalDate.of(2023, 10, 27),
-            "Buy pizza for meeting",
-            LocalTime.of(13, 00),
-            60
-        );
-        calendar.addEvent(allDayEvent);
-        calendar.addEvent(hourlyEvent);
-        calendar.addEvent(hourlyEvent2);
-        // [ END TEST ]
+        addMockEvents();
         
         
         // Find events happening in seven days
@@ -153,5 +132,34 @@ public class CalendarUI
             // Output Event details
             System.out.println();
         }
+    }
+    
+    
+    // [ Test Data ]
+    
+    public void addMockEvents()
+    {
+        LocalDate twoDaysFromToday = LocalDate.now().plusDays(2);
+        
+        // Add a mock event to test how to map the event
+        Event allDayEvent = new AllDayEvent(
+            twoDaysFromToday, 
+            "Meeting 1"
+        );
+        Event hourlyEvent = new HourlyEvent(
+            twoDaysFromToday,
+            "One hour meeting",
+            LocalTime.of(13, 00),
+            60
+        );
+        Event hourlyEvent2 = new HourlyEvent(
+            twoDaysFromToday,
+            "Buy pizza for meeting",
+            LocalTime.of(13, 00),
+            60
+        );
+        calendar.addEvent(allDayEvent);
+        calendar.addEvent(hourlyEvent);
+        calendar.addEvent(hourlyEvent2);
     }
 }

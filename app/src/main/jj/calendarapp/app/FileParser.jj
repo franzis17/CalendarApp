@@ -1,0 +1,126 @@
+PARSER_BEGIN(FileParser)
+
+package calendarapp.app;
+
+import calendarapp.app.utils.*;
+
+import java.io.*;
+
+/**
+ * Read a file and parse the file
+ */
+public class FileParser
+{
+}
+
+PARSER_END(FileParser)
+
+SKIP: { " " | "\n" | "\t" | "\r" | "\r\n" | "," }
+
+/*
+  [ What are Tokens? ]
+  
+  > Tokens are the individual "words" (unit of information) contained in a file,
+    which needs to be "parsed"/"read".
+ */
+
+// General Tokens
+TOKEN : {
+    < COLON: ":" >
+|   < NUM: ["0"-"9"] >
+}
+
+// Specific Tokens
+TOKEN : {
+    // Events
+    < EVENT: "event" >
+|   < DATE: <NUM> (<NUM>)* "-" <NUM> (<NUM>)* "-" <NUM> (<NUM>)* >
+|   < TIME: <NUM> (<NUM>)* ":" <NUM> (<NUM>)* ":" <NUM> (<NUM>)* >
+|   < DURATION: (<NUM>)+ >
+|   < STRING: "\"" (~["\""])* "\"" >
+
+    // Plugins
+|   < PLUGIN: "plugin" >
+|   < KEY: (["a"-"z", "A"-"Z", "0"-"9", "_"])+ >
+|   < OPEN_BRACE: "{" >
+|   < CLOSE_BRACE: "}" >
+
+|   < IDENTIFIER: (["a"-"z", "A"-"Z", "_", "$"]) (["a"-"z", "A"-"Z", "_", "$", "0"-"9"])* >
+|   < PLUGIN_PACKAGE_NAME: <IDENTIFIER> ( "." <IDENTIFIER>)* >
+}
+
+/**
+ * Root of BNF production
+ */
+void parseFile() :
+{
+}
+{
+    // File should contain details of either multiple "events" or multiple "plugins"
+    ( ParseEvent() | ParsePlugin() )+
+    <EOF>
+}
+
+/**
+ * Parse an event if it contains the following patterns of event details
+ */
+void ParseEvent() :
+{
+    // Event fields
+    Token dateToken, timeToken, titleToken, durationToken;
+    String date, time, title;
+    int duration;
+}
+{
+    {
+        System.out.println("\n> Parsing event...");
+    }
+    
+    <EVENT> dateToken=<DATE> timeToken=<TIME> durationToken=<DURATION> titleToken=<STRING>
+    {
+        date = dateToken.image;
+        time = timeToken.image;
+        duration = Integer.parseInt(durationToken.image);
+        title = StringUtility.removeFirstAndLastChar(titleToken.image);
+        System.out.println("Event:\n" + 
+            "    date = " + date + "\n" +
+            "    time = " + time + "\n" +
+            "duration = " + duration + "\n" +
+            "   title = " + title
+        );
+    }
+}
+
+/**
+ * Parse a Plugin if it contains the following patterns of plugin details
+ */
+void ParsePlugin() :
+{
+    // Plugin Fields
+    Token pluginIDToken, keyToken, valueToken;
+    String pluginID, key, value;
+}
+{
+    {
+        System.out.println("\n> Parsing plugin...");
+    }
+    
+    <PLUGIN> pluginIDToken=<PLUGIN_PACKAGE_NAME>
+    {
+        pluginID = pluginIDToken.image;
+        System.out.println("Plugin id = " + pluginID);
+    }
+    <OPEN_BRACE>
+        // Contains zero or more key
+        // ( KeyValue() )*
+        (
+            keyToken=<KEY> <COLON> valueToken=<STRING>
+            {
+                key = keyToken.image;
+                value = StringUtility.removeFirstAndLastChar(valueToken.image);
+                System.out.println("+ Key-value pair found:");
+                System.out.println("Key = " + key + ", value = " + value);
+            }
+        )*
+    <CLOSE_BRACE>
+}

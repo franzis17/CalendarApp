@@ -1,5 +1,14 @@
+/*
+ * From the tutorial example:
+ * - JavaCC gradle plugin:
+ *   > Note: we're using the third-party JavaCC Gradle plugin:
+ *     https://github.com/IntershopCommunicationsAG/javacc-gradle-plugin
+ */
+
 plugins {
     id 'application'
+    // JavaCC From the tutorial example
+    id 'com.intershop.gradle.javacc' version '4.0.1'
 }
 
 repositories {
@@ -25,6 +34,16 @@ dependencies {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+javacc {
+    configs {
+        createmyparser {
+            inputFile = file('src/main/jj/calendarapp/app/FileParser.jj')
+            packageName = 'calendarapp.app'
+            //lookahead = '2'
+        }
     }
 }
 

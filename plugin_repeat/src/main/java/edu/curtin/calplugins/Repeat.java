@@ -1,7 +1,7 @@
 package edu.curtin.calplugins;
 
 // package dependencies
-import calendarapp.api.PluginsAPI;
+import calendarapp.api.*;
 
 // external dependencies
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.time.LocalTime;
  * Can add either an All-Day Event or an Hourly Event and repeat the event for every "n" days
  * until a year after startDate.
  */
-public class RepeatPlugin implements PluginsAPI
+public class Repeat implements PluginsAPI
 {
     private final static int ONE_YEAR = 365;
     
