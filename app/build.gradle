@@ -42,6 +42,8 @@ javacc {
         createmyparser {
             inputFile = file('src/main/jj/calendarapp/app/FileParser.jj')
             packageName = 'calendarapp.app'
+            // Enable to see 2 tokens ahead when deciding which function to read
+            // (specifically used for AllDayEvent() and HourlyEvent())
             lookahead = '2'
         }
     }

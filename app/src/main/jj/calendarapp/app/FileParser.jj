@@ -32,21 +32,28 @@ TOKEN : {
 
 // Specific Tokens
 TOKEN : {
-    // Events
+// Type Identifiers
     < EVENT: "event" >
+|   < PLUGIN: "plugin" >
+|   < SCRIPT: "script" >
+
+// Event Tokens
 |   < DATE: <NUM> (<NUM>)* "-" <NUM> (<NUM>)* "-" <NUM> (<NUM>)* >
 |   < TIME: <NUM> (<NUM>)* ":" <NUM> (<NUM>)* ":" <NUM> (<NUM>)* >
 |   < DURATION: (<NUM>)+ >
 |   < STRING: "\"" (~["\""])* "\"" >
 |   < ALL_DAY: "all-day" >
 
-    // Plugins
-|   < PLUGIN: "plugin" >
+// Plugin Tokens
+
 |   < KEY: (["a"-"z", "A"-"Z", "0"-"9", "_"])+ >
 |   < OPEN_BRACE: "{" >
 |   < CLOSE_BRACE: "}" >
 |   < IDENTIFIER: (["a"-"z", "A"-"Z", "_", "$"]) (["a"-"z", "A"-"Z", "_", "$", "0"-"9"])* >
 |   < PLUGIN_PACKAGE_NAME: <IDENTIFIER> ( "." <IDENTIFIER>)* >
+
+// Script Tokens
+|   < SCRIPT_CODE: "\"" ( (~["\""]) | ("\"\"") )* "\"" >
 }
 
 /**
@@ -56,8 +63,8 @@ void parseFile() :
 {
 }
 {
-    // File should contain details of either multiple "events" or multiple "plugins"
-    ( ParseEvent() | ParsePlugin() )+
+    // File should contain details of either multiples of "events", "plugins", or "scripts"
+    ( ParseEvent() | ParsePlugin() | ParseScript() )+
     <EOF>
 }
 
@@ -135,8 +142,7 @@ void ParsePlugin() :
         System.out.println("Plugin id = " + pluginID);
     }
     <OPEN_BRACE>
-        // Contains zero or more key
-        // ( KeyValue() )*
+        // Contains zero or more key-value pairs
         (
             keyToken=<KEY> <COLON> valueToken=<STRING>
             {
@@ -147,4 +153,23 @@ void ParsePlugin() :
             }
         )*
     <CLOSE_BRACE>
+}
+
+/**
+ * Parse a Script if it contains the word "script"
+ */
+void ParseScript() :
+{
+    Token scriptCodeToken;
+    String scriptCodeStr;
+}
+{
+    {
+        System.out.println("\n> Parsing Script...");
+    }
+    <SCRIPT> scriptCodeToken=<SCRIPT_CODE>
+    {
+        scriptCodeStr = StringUtility.removeFirstAndLastChar(scriptCodeToken.image);
+        System.out.println("Script Code:\n" + scriptCodeStr);
+    }
 }
