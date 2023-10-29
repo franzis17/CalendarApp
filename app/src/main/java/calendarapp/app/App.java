@@ -14,7 +14,7 @@ public class App
     {
         if(args.length == 0)
         {
-            System.out.println("NOTE: Unable to start the application, please provide a file name as an argument.");
+            System.out.println("Error: Unable to start the application, please provide a file name as an argument.");
             return;
         }
 
