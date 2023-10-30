@@ -1,4 +1,4 @@
-event 2023-11-01 15:00:00 90 "Meeting 1"
+event 2023-11-01 15:00:00 90 "Upload SEC Assignment 2 submission"
 event 2023-11-02 08:30:45 45 "Meeting 2"
 plugin edu.curtin.calplugins.Repeat
 {

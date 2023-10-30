@@ -58,7 +58,6 @@ public class CalendarHandler
         events.add(event);
     }
 
-
     /**
      * Check if there are any events within the 7 days requested.
      */

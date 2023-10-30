@@ -3,17 +3,26 @@ PARSER_BEGIN(FileParser)
 package calendarapp.app;
 
 import calendarapp.app.utils.*;
+import calendarapp.app.Event.*;
 
 import java.io.*;
+import java.time.*;
 
 /**
  * Read a file and parse the file
  */
 public class FileParser
 {
+    private static CalendarHandler calendarHandler;
+    
     /** Used for adding plugin classpaths to the pluginHandler(loader of plugins) */
     private static PluginHandler pluginHandler;
     private static ScriptHandler scriptHandler;
+    
+    public void setCalendarHandler(CalendarHandler calendarHandler)
+    {
+        this.calendarHandler = calendarHandler;
+    }
     
     public void setPluginHandler(PluginHandler pluginHandler)
     {
@@ -97,41 +106,48 @@ void ParseEvent() :
 void AllDayEvent() :
 {
     Token dateToken, titleToken;
-    String date, title;
+    String dateStr, title;
 }
 {
     dateToken=<DATE> <ALL_DAY> titleToken=<STRING>
     {
-        date = dateToken.image;
+        dateStr = dateToken.image;
         title = StringUtility.removeFirstAndLastChar(titleToken.image);
         System.out.println("All-Day Event:\n" +
-            "   date = " + date + "\n" +
+            "   date = " + dateStr + "\n" +
             "  title = " + title
         );
+        
         // add all day event
+        LocalDate date = StringUtility.stringToDate(dateStr);
+        calendarHandler.addEvent(new AllDayEvent(date, title));
     }
 }
 
 void HourlyEvent() :
 {
     Token dateToken, timeToken, titleToken, durationToken;
-    String date, time, title;
+    String dateStr, timeStr, title;
     int duration;
 }
 {
     dateToken=<DATE> timeToken=<TIME> durationToken=<DURATION> titleToken=<STRING>
     {
-        date = dateToken.image;
-        time = timeToken.image;
+        dateStr = dateToken.image;
+        timeStr = timeToken.image;
         duration = Integer.parseInt(durationToken.image);
         title = StringUtility.removeFirstAndLastChar(titleToken.image);
         System.out.println("Hourly Event:\n" + 
-            "      date = " + date + "\n" +
-            "      time = " + time + "\n" +
+            "      date = " + dateStr + "\n" +
+            "      time = " + timeStr + "\n" +
             "  duration = " + duration + "\n" +
             "     title = " + title
         );
+        
         // add hourly event
+        LocalDate date = StringUtility.stringToDate(dateStr);
+        LocalTime time = StringUtility.stringToTime(timeStr);
+        calendarHandler.addEvent(new HourlyEvent(date, title, time, duration));
     }
 }
 

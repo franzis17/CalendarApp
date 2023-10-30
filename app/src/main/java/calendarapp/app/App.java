@@ -24,14 +24,15 @@ public class App
         try
         {
             // Create initial calendar objects
-            CalendarHandler calendar = new CalendarHandler();
-            CalendarControls calendarAPI = new CalendarControls(calendar);
-            CalendarUI ui = new CalendarUI(calendar);
+            CalendarHandler calendarHandler = new CalendarHandler();
+            CalendarControls calendarAPI = new CalendarControls(calendarHandler);
+            CalendarUI ui = new CalendarUI(calendarHandler);
             FileParser fileParser = new FileParser(new FileReader(args[0]));
 
             PluginHandler pluginHandler = new PluginHandler(calendarAPI);
             ScriptHandler scriptHandler = new ScriptHandler(calendarAPI);
 
+            fileParser.setCalendarHandler(calendarHandler);
             fileParser.setPluginHandler(pluginHandler);
             fileParser.setScriptHandler(scriptHandler);
             fileParser.parseFile();
