@@ -11,6 +11,13 @@ import java.io.*;
  */
 public class FileParser
 {
+    /** Used for adding plugin classpaths to the pluginHandler(loader of plugins) */
+    private static PluginHandler pluginHandler;
+    
+    public void setPluginHandler(PluginHandler pluginHandler)
+    {
+        this.pluginHandler = pluginHandler;
+    }
 }
 
 PARSER_END(FileParser)
@@ -45,7 +52,6 @@ TOKEN : {
 |   < ALL_DAY: "all-day" >
 
 // Plugin Tokens
-
 |   < KEY: (["a"-"z", "A"-"Z", "0"-"9", "_"])+ >
 |   < OPEN_BRACE: "{" >
 |   < CLOSE_BRACE: "}" >
@@ -140,6 +146,8 @@ void ParsePlugin() :
     {
         pluginID = pluginIDToken.image;
         System.out.println("Plugin id = " + pluginID);
+        // Add the plugin classpath (pluginID) to the list of plugins in main app client
+        pluginHandler.addPluginByClasspath(pluginID);
     }
     <OPEN_BRACE>
         // Contains zero or more key-value pairs
