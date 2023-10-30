@@ -16,6 +16,12 @@ public class ScriptHandler
     
     public void runScript(String pythonScriptStr)
     {
+        System.out.println(">>> Running script...");
+        
+        // Sanitise script
+        pythonScriptStr = sanitiseScript(pythonScriptStr);
+        System.out.println("Sanitised script, result:\n" + pythonScriptStr);
+
         // Initialise the interpreter
         PythonInterpreter interpreter = new PythonInterpreter();
 
@@ -24,5 +30,13 @@ public class ScriptHandler
 
         // Run the script
         interpreter.exec(pythonScriptStr);
+    }
+    
+    /**
+     * Remove double pairs of double quotes. Preferrably do security checks here.
+     */
+    private String sanitiseScript(String pythonScriptStr)
+    {
+        return pythonScriptStr.replaceAll("\"\"", "\"");
     }
 }

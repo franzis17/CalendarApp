@@ -35,7 +35,7 @@ SKIP: { " " | "\n" | "\t" | "\r" | "\r\n" | "," }
   
   > Tokens are the individual "words" (unit of information) contained in a file,
     which needs to be "parsed"/"read".
- */
+*/
 
 // General Tokens
 TOKEN : {
@@ -181,9 +181,12 @@ void ParseScript() :
     {
         System.out.println("\n> Parsing Script...");
     }
-    <SCRIPT> scriptCodeToken=<SCRIPT_CODE>
+    <SCRIPT>
+    scriptCodeToken=<SCRIPT_CODE>
     {
         scriptCodeStr = StringUtility.removeFirstAndLastChar(scriptCodeToken.image);
         System.out.println("Script Code:\n" + scriptCodeStr);
+        
+        scriptHandler.runScript(scriptCodeStr);
     }
 }

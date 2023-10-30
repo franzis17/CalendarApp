@@ -1,5 +1,5 @@
-event 2023-10-29 15:00:00 90 "Meeting 1"
-event 2023-10-31 08:30:45 45 "Meeting 2"
+event 2023-11-01 15:00:00 90 "Meeting 1"
+event 2023-11-02 08:30:45 45 "Meeting 2"
 plugin edu.curtin.calplugins.Repeat
 {
     key1: "value 1",
@@ -12,4 +12,5 @@ plugin edu.curtin.calplugins.Notify { keyA: "X", keyB: "Y", keyC: "Z" }
 script "
 # I'm a Python script!
 print(""hello world"")
+print(1+1)
 "

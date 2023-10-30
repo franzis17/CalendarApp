@@ -80,31 +80,6 @@ public class CalendarUI
         terminalGrid.print(rowEventContents, rowEventTimes, columnDates);
         System.out.println();
     }
-
-    /**
-     * Starting from the current date, get all 7 days to display.
-     * These dates will be displayed in the columns of the calendar.
-     */
-    public String[] getNextSevenDays()
-    {
-        String[] columnDates = new String[7];
-        
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
-        System.out.println("Original Format (of Current date) = " + currentDate);
-        
-        // Add the other 7 days from now
-        for(int i = 0; i < 7; i++)
-        {
-            String formattedDate = currentDate.format(dmyFormat);
-            columnDates[i] = formattedDate;
-            
-            // Add the next date
-            currentDate = currentDate.plusDays(1);
-        }
-        
-        return columnDates;
-    }
     
     /**
      * 1. Grab user input: The user enters an input to search for an event.
