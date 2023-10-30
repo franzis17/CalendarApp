@@ -28,8 +28,8 @@ public class CalendarUI
         // Info to display in the Calendar
         LocalDate[] sevenDays = DateUtility.getNextSevenDays();
         String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
-        String[] rowEventTimes = new String[25];          // Max 24 hours in a day
-        String[][] rowEventContents = new String[25][7];  // 30 rows(times), 7 columns(dates)
+        String[] rowEventTimes = new String[25];          // Max 24 hours in a day + all day hour
+        String[][] rowEventContents = new String[25][7];  // 30 rows(hour time), 7 columns(dates)
         
         
         addMockEvents();

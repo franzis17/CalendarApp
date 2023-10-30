@@ -13,10 +13,16 @@ public class FileParser
 {
     /** Used for adding plugin classpaths to the pluginHandler(loader of plugins) */
     private static PluginHandler pluginHandler;
+    private static ScriptHandler scriptHandler;
     
     public void setPluginHandler(PluginHandler pluginHandler)
     {
         this.pluginHandler = pluginHandler;
+    }
+    
+    public void setScriptHandler(ScriptHandler scriptHandler)
+    {
+        this.scriptHandler = scriptHandler;
     }
 }
 

@@ -1,10 +1,19 @@
 package calendarapp.terminalgrid;
 
-import org.fusesource.jansi.*;
+// import org.fusesource.jansi.*;
 import org.apache.commons.text.WordUtils;
 import java.io.*;
+import java.nio.charset.*;
 import java.util.*;
 import java.util.function.Consumer;
+
+/*
+  [NOTES]
+  
+  > Commented Ansi-related code to prevent `java.lang.NoSuchMethodError` caused by double
+    dependencies from TerminalGrid and Jython (both Jython and TerminalGrid depends on Jansi)
+  > Used System.out instead of AnsiConsole
+ */
 
 /** 
  * Prints 2D arrays of Strings in a tabular form to the console. Create an instance with 
@@ -12,10 +21,10 @@ import java.util.function.Consumer;
  */
 public class TerminalGrid
 {
-    static 
-    {
-        AnsiConsole.systemInstall();
-    }
+    // static 
+    // {
+    //     AnsiConsole.systemInstall();
+    // }
     
     private enum Box
     { 
@@ -23,10 +32,10 @@ public class TerminalGrid
         BOTTOM_LEFT, BOTTOM_RIGHT, MID_TOP, MID_BOTTOM, MID_LEFT, MID_RIGHT, MID
     }
     
-    public static class BoxCharSet 
+    public static class BoxChars 
     { 
         private String[] chars;
-        public BoxCharSet(String... chars)
+        public BoxChars(String... chars)
         {
             this.chars = chars;
         }
@@ -37,27 +46,39 @@ public class TerminalGrid
         }
     }
 
-    public static final BoxCharSet UNICODE_BOX_CHARS = new BoxCharSet("│ ", " │ ", " │", "─", "─", "─", "┌─", "─┐",  "└─",  "─┘", "─┬─", "─┴─", "├─", "─┤", "─┼─");
-    public static final BoxCharSet ASCII_BOX_CHARS   = new BoxCharSet("| ", " | ", " |", "-", "-", "-", "/-", "-\\", "\\-", "-/", "-+-", "-+-", "+-", "-+", "-+-");
+    public static final BoxChars UNICODE_BOX_CHARS = new BoxChars(
+        /*LEFT:*/ "\u2502 ", /*MID_VERTICAL:*/ " \u2502 ", /*RIGHT*/" \u2502", 
+        /*TOP:*/ "\u2500", /*MID_HORIZONTAL:*/ "\u2500", /*BOTTOM:*/ "\u2500", 
+        /*TOP_LEFT:*/ "\u250c\u2500", /*TOP_RIGHT:*/"\u2500\u2510", 
+        /*BOTTOM_LEFT:*/ "\u2514\u2500", /*BOTTOM_RIGHT:*/ "\u2500\u2518", 
+        /*MID_TOP:*/ "\u2500\u252c\u2500", /*MID_BOTTOM:*/ "\u2500\u2534\u2500", 
+        /*MID_LEFT:*/ "\u251c\u2500", /*MID_RIGHT:*/ "\u2500\u2524", 
+        /*MID:*/ "\u2500\u253c\u2500");
+    public static final BoxChars ASCII_BOX_CHARS = new BoxChars(
+        "| ", " | ", " |", "-", "-", "-", "/-", "-\\", "\\-", "-/", "-+-", "-+-", "+-", "-+", "-+-");
         
-    private final PrintStream out;
+    private final PrintStream baseOut;
+    private PrintStream out;
     private int terminalWidth;
-    private BoxCharSet boxChars = UNICODE_BOX_CHARS;
+    private BoxChars boxChars = UNICODE_BOX_CHARS;
     
     public static TerminalGrid create()
     {
-        var out = AnsiConsole.out();
-        out.setMode(AnsiMode.Force);
-        int terminalWidth = AnsiConsole.getTerminalWidth();
-        if(terminalWidth < 1)
-        {
-            terminalWidth = 80;
-        }
-        return new TerminalGrid(out, terminalWidth);
+        // var ansiOut = AnsiConsole.out();
+        // ansiOut.setMode(AnsiMode.Force);
+        // int terminalWidth = AnsiConsole.getTerminalWidth();
+        // if(terminalWidth < 1)
+        // {
+        //     terminalWidth = 80;
+        // }
+        // return new TerminalGrid(ansiOut, terminalWidth);
+        int terminalWidth = 200;  // fixed terminal width
+        return new TerminalGrid(System.out, terminalWidth);
     }
     
     public TerminalGrid(PrintStream out, int terminalWidth)
     {
+        this.baseOut = out;
         this.out = out;
         this.terminalWidth = terminalWidth;
     }
@@ -74,9 +95,36 @@ public class TerminalGrid
         this.terminalWidth = terminalWidth;
     }
     
-    public void setBoxChars(BoxCharSet boxChars)
+    /**
+     * Chooses how to draw the table lines. TerminalGrid has two pre-defined constants that will
+     * work here:
+     *
+     * (1) UNICODE_BOX_CHARS produces nice, joining lines (depending on the font), but may not work
+     *     on all systems due to encoding issues.
+     *
+     * (2) ASCII_BOX_CHARS produces lines that are a bit uglier, but are virtually certain to work.
+     *
+     * You can also create and pass in your own instance of BoxChars.
+     */
+    public void setBoxChars(BoxChars boxChars)
     {
         this.boxChars = boxChars;
+    }
+    
+    /**
+     * Sets the character encoding used to print the grid. By default, the system default is used.
+     *
+     * This may determine whether box-drawing characters are displayed properly. The basic ASCII 
+     * characters will probably work on virtually any Charset, but proper Unicode box-drawing 
+     * characters will tend to require UTF-8.
+     *
+     * Example:
+     * 
+     * terminalGrid.setCharset(java.nio.charset.Charset.forName("UTF-8"));
+     */
+    public void setCharset(Charset charset)
+    {
+        this.out = new PrintStream(baseOut, true, charset);
     }
 
     /**

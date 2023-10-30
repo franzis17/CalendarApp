@@ -61,7 +61,7 @@ public class TestTerminalGrid
 
         
         // With custom box-drawing characters (if you must!)
-        terminalGrid.setBoxChars(new TerminalGrid.BoxCharSet("│ ", " ┊ ", " │", "─", "╌", "─", "╭─", "─╮",  "╰─",  "─╯", "─┬─", "─┴─", "├╌", "╌┤", "╌┼╌"));
-        terminalGrid.print(messages, rowHeadings, colHeadings); 
+        // terminalGrid.setBoxChars(new TerminalGrid.BoxCharSet("│ ", " ┊ ", " │", "─", "╌", "─", "╭─", "─╮",  "╰─",  "─╯", "─┬─", "─┴─", "├╌", "╌┤", "╌┼╌"));
+        // terminalGrid.print(messages, rowHeadings, colHeadings); 
     }
 }

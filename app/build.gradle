@@ -24,6 +24,8 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
     
+    // Scripting capabilities - Python's Jython
+    implementation 'org.python:jython-standalone:2.7.1'
     
     // [ subproject dependencies ]
     implementation project(':terminalgrid')

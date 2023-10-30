@@ -9,20 +9,17 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
     
-    
     // Terminal Grid dependencies
-    
-    implementation 'org.fusesource.jansi:jansi:2.4.0'
+    // implementation 'org.fusesource.jansi:jansi:2.4.0'
     implementation 'org.apache.commons:commons-text:1.10.0'
-    
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
