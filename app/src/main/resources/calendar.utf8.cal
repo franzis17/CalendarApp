@@ -2,8 +2,9 @@ event 2023-11-01 15:00:00 90 "Upload SEC Assignment 2 submission"
 event 2023-11-02 08:30:45 45 "Meeting 2"
 plugin edu.curtin.calplugins.Repeat
 {
-    key1: "value 1",
-    key2: "value 2"
+    title: "breathe",
+    startDate: "2023-11-03",
+    repeat: "5"
 }
 event 2023-12-25
     all-day "Christmas Day"
@@ -16,8 +17,9 @@ event 2023-11-20
 plugin edu.curtin.calplugins.Notify { keyA: "X", keyB: "Y", keyC: "Z" }
 
 script "
-#Python script
-from datetime import date
-
 calendarAPI.addAllDayEvent(""2023-10-25"", ""Teachers Day"")
+"
+
+script "
+calendarAPI.addAllDayEvent(""2023-11-05"", ""Outdoor classroom day"")
 "

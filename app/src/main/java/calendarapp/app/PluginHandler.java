@@ -34,7 +34,35 @@ public class PluginHandler
         plugins.add(plugin);
     }
     
-    public void loadPlugins()
+    public PluginsAPI loadPlugin(String classpath)
+    {
+        System.out.println("> Loading the plugin: " + classpath);
+        PluginsAPI plugin = null;
+
+        try
+        {
+            Class<?> pluginClass = Class.forName(classpath);
+            PluginsAPI pluginObj = (PluginsAPI)pluginClass.getConstructor().newInstance();
+            plugin = pluginObj;
+            plugin.start(calendarAPI);
+        }
+        catch(ClassNotFoundException e)
+        {
+            System.out.println("Error: No classes found with the name '"+classpath+"'");
+        }
+        catch(RuntimeException e)
+        {
+            e.printStackTrace();
+        }
+        catch(ReflectiveOperationException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return plugin;
+    }
+    
+    public void loadAllPlugins()
     {
         System.out.println(">>> Loading Plugins...");
         if(pluginClasspaths.size() == 0)

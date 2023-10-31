@@ -1,5 +1,7 @@
 package calendarapp.app.testapp;
 
+import calendarapp.app.utils.*;
+
 import java.time.LocalDate;
 
 public class TestDate
@@ -7,9 +9,7 @@ public class TestDate
     public static void runTest()
     {
         TestDate testDate = new TestDate();
-        testDate.dateRepetition();
-        testDate.addYearToDate();
-        testDate.dateIsBefore();
+        testDate.stringToDate();
     }
     
     /**
@@ -58,5 +58,15 @@ public class TestDate
         {
             System.out.println(date1 + " < " + date2);
         }
+    }
+    
+    public void stringToDate()
+    {
+        System.out.println(">>> Testing string to date...");
+        String strDate = "2023-11-11";
+        System.out.println("strDate = " + strDate);
+
+        LocalDate date = DateUtility.newStringToDate(strDate);
+        System.out.println("parsed date = " + date);
     }
 }

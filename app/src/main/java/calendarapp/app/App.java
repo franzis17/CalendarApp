@@ -10,7 +10,7 @@ public class App
     public static void main(String[] args)
     {
         runCalendarApp(args);
-        // testLocale(args);
+        //test(args);
     }
     
     public static void runCalendarApp(String[] args)
@@ -39,7 +39,7 @@ public class App
 
             fileParser.parseFile();
             
-            pluginHandler.loadPlugins();
+            pluginHandler.loadAllPlugins();
 
             ui.display();
         }
@@ -70,19 +70,9 @@ public class App
         }
     }
     
-    public static void testDate()
+    public static void test(String[] args)
     {
-        TestDate.runTest();
-    }
-    
-    public static void testFileParser(String[] args)
-    {
-        TestFileParser.parseFile(args);
-    }
-    
-    public static void testLocale(String[] args)
-    {
-        TestLocale testLocale = new TestLocale();
-        testLocale.runTest();
+        TestMain testMain = new TestMain(args);
+        testMain.startTest();
     }
 }

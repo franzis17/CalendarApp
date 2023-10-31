@@ -48,7 +48,7 @@ public class CalendarControls implements CalendarAPI
     {
         calendar.addEvent(new HourlyEvent(date, title, startTime, durationMins));
     }
-    
+
 
     // Notify
     

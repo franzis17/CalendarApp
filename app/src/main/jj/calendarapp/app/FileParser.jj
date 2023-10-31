@@ -4,6 +4,7 @@ package calendarapp.app;
 
 import calendarapp.app.utils.*;
 import calendarapp.app.Event.*;
+import calendarapp.api.*;
 
 import java.io.*;
 import java.time.*;
@@ -113,10 +114,6 @@ void AllDayEvent() :
     {
         dateStr = dateToken.image;
         title = StringUtility.removeFirstAndLastChar(titleToken.image);
-        System.out.println("All-Day Event:\n" +
-            "   date = " + dateStr + "\n" +
-            "  title = " + title
-        );
         
         // add all day event
         LocalDate date = StringUtility.stringToDate(dateStr);
@@ -137,12 +134,6 @@ void HourlyEvent() :
         timeStr = timeToken.image;
         duration = Integer.parseInt(durationToken.image);
         title = StringUtility.removeFirstAndLastChar(titleToken.image);
-        System.out.println("Hourly Event:\n" + 
-            "      date = " + dateStr + "\n" +
-            "      time = " + timeStr + "\n" +
-            "  duration = " + duration + "\n" +
-            "     title = " + title
-        );
         
         // add hourly event
         LocalDate date = StringUtility.stringToDate(dateStr);
@@ -158,17 +149,17 @@ void ParsePlugin() :
 {
     Token pluginIDToken, keyToken, valueToken;
     String pluginID, key, value;
+    PluginsAPI plugin;
 }
 {
-    {
-        System.out.println("\n> Parsing plugin...");
-    }
-    
     <PLUGIN> pluginIDToken=<PLUGIN_PACKAGE_NAME>
+    
+    // Load and start the plugin
     {
         pluginID = pluginIDToken.image;
         System.out.println("Plugin id = " + pluginID);
-        // Add the plugin classpath (pluginID) to the list of plugins in main app client
+        
+        plugin = pluginHandler.loadPlugin(pluginID);
         pluginHandler.addPluginByClasspath(pluginID);
     }
     <OPEN_BRACE>
@@ -176,13 +167,34 @@ void ParsePlugin() :
         (
             keyToken=<KEY> <COLON> valueToken=<STRING>
             {
-                key = keyToken.image;
-                value = StringUtility.removeFirstAndLastChar(valueToken.image);
-                System.out.println("+ Key-value pair found:");
-                System.out.println("Key = " + key + ", value = " + value);
+                try
+                {
+                    // Parse key and value
+                    key = keyToken.image;
+                    value = StringUtility.removeFirstAndLastChar(valueToken.image);
+                    
+                    // Add key-value pair to plugin arguments
+                    plugin.addArgument(key, value);
+                }
+                catch(IllegalArgumentException e)
+                {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         )*
     <CLOSE_BRACE>
+    
+    // Once all key-value pairs have been parsed, do the plugin's task
+    {
+        try
+        {
+            plugin.doTask();
+        }
+        catch(IllegalArgumentException e)
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }
 
 /**
@@ -194,15 +206,10 @@ void ParseScript() :
     String scriptCodeStr;
 }
 {
-    {
-        System.out.println("\n> Parsing Script...");
-    }
     <SCRIPT>
     scriptCodeToken=<SCRIPT_CODE>
     {
         scriptCodeStr = StringUtility.removeFirstAndLastChar(scriptCodeToken.image);
-        System.out.println("Script Code:\n" + scriptCodeStr);
-        
         scriptHandler.runScript(scriptCodeStr);
     }
 }

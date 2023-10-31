@@ -1,7 +1,7 @@
 package calendarapp.app.utils;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.*;
+import java.time.format.*;
 
 public class DateUtility
 {
@@ -62,7 +62,6 @@ public class DateUtility
     public static LocalDate stringToDate(String dateStr)
     {
         LocalDate localDate = null;
-
         try
         {
             String[] dates = dateStr.split("-");
@@ -75,7 +74,46 @@ public class DateUtility
         {
             System.out.println("Error: Date is not a number. Date must be in the format 'yyyy-mm-dd'.");
         }
-
         return localDate;
+    }
+    
+    public static LocalDate newStringToDate(String dateStr)
+    {
+        LocalDate parsedDate = null;
+        try
+        {
+            parsedDate = LocalDate.parse(dateStr);
+        }
+        catch(DateTimeParseException e)
+        {
+            System.out.println("Error: Date must be in the format 'yyyy-mm-dd' and not " + 
+                "'"+dateStr+"'");
+        }
+        return parsedDate;
+    }
+    
+    
+    // [ Time functions ]
+
+    /**
+     * Time string must be in the format "hr:min:sec", with all values to be numeric
+     */
+    public static LocalTime stringToTime(String timeStr)
+    {
+        LocalTime localTime = null;
+        try
+        {
+            String[] times = timeStr.split(":");
+            int hr = Integer.parseInt(times[0]);
+            int min = Integer.parseInt(times[1]);
+            int sec = Integer.parseInt(times[2]);
+            localTime = LocalTime.of(hr, min, sec);
+        }
+        catch(NumberFormatException e)
+        {
+            System.out.println("Error: Time is not a number. " +
+                "Time must be in the format 'hr:min:sec'");
+        }
+        return localTime;
     }
 }

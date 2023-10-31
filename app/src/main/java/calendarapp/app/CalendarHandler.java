@@ -51,7 +51,7 @@ public class CalendarHandler
         }
         events.add(event);
     }
-
+    
     /**
      * Check if there are any events within the 7 days requested.
      */
@@ -121,5 +121,20 @@ public class CalendarHandler
             }
         }
         return null;
+    }
+    
+    
+    // [Validations]
+
+    /**
+     * If there is no startTime field, then presume it is an "AllDayEvent"
+     */
+    private boolean isAllDayEvent(String startTime)
+    {
+        if(startTime.isEmpty())
+        {
+            return true;
+        }
+        return false;
     }
 }
