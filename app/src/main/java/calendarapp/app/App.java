@@ -39,8 +39,6 @@ public class App
 
             fileParser.parseFile();
             
-            pluginHandler.loadAllPlugins();
-
             ui.display();
         }
         catch(IllegalArgumentException e)

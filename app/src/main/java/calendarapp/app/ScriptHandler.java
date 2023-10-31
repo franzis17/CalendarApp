@@ -16,8 +16,6 @@ public class ScriptHandler
     
     public void runScript(String pythonScriptStr)
     {
-        System.out.println(">>> Running script...");
-        
         // Sanitise script
         pythonScriptStr = sanitiseScript(pythonScriptStr);
 

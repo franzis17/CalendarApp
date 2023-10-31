@@ -16,7 +16,6 @@ public class FileParser
 {
     private static CalendarHandler calendarHandler;
     
-    /** Used for adding plugin classpaths to the pluginHandler(loader of plugins) */
     private static PluginHandler pluginHandler;
     private static ScriptHandler scriptHandler;
     
@@ -97,9 +96,6 @@ void ParseEvent() :
 {
 }
 {
-    {
-        System.out.println("\n> Parsing event...");
-    }
     <EVENT>
     ( AllDayEvent() | HourlyEvent() )
 }
@@ -157,8 +153,6 @@ void ParsePlugin() :
     // Load and start the plugin
     {
         pluginID = pluginIDToken.image;
-        System.out.println("Plugin id = " + pluginID);
-        
         plugin = pluginHandler.loadPlugin(pluginID);
         pluginHandler.addPluginByClasspath(pluginID);
     }

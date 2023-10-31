@@ -145,8 +145,6 @@ public class Repeat implements PluginsAPI
     
     public void repeatedlyAddAllDayEvent()
     {
-        System.out.println(">>> Repeatedly adding All Day Events...");
-        
         // Add the very first event
         calendarAPI.addAllDayEvent(startDate, title);
 

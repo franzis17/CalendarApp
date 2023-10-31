@@ -4,6 +4,9 @@ import calendarapp.api.*;
 
 import java.util.*;
 
+/**
+ * Helps load plugins from the parser by using Reflection to create the Plugin's class
+ */
 public class PluginHandler
 {
     private List<String> pluginClasspaths = new ArrayList<>();
@@ -36,7 +39,6 @@ public class PluginHandler
     
     public PluginsAPI loadPlugin(String classpath)
     {
-        System.out.println("> Loading the plugin: " + classpath);
         PluginsAPI plugin = null;
 
         try
@@ -44,7 +46,10 @@ public class PluginHandler
             Class<?> pluginClass = Class.forName(classpath);
             PluginsAPI pluginObj = (PluginsAPI)pluginClass.getConstructor().newInstance();
             plugin = pluginObj;
+
             plugin.start(calendarAPI);
+
+            plugins.add(plugin);
         }
         catch(ClassNotFoundException e)
         {
@@ -64,7 +69,6 @@ public class PluginHandler
     
     public void loadAllPlugins()
     {
-        System.out.println(">>> Loading Plugins...");
         if(pluginClasspaths.size() == 0)
         {
             System.out.println("No plugins were found.");
@@ -103,6 +107,4 @@ public class PluginHandler
             }
         }
     }
-    
-    // run script, to be called by the FileParser
 }
