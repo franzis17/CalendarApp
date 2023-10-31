@@ -36,6 +36,7 @@ public class App
             fileParser.setCalendarHandler(calendarHandler);
             fileParser.setPluginHandler(pluginHandler);
             fileParser.setScriptHandler(scriptHandler);
+
             fileParser.parseFile();
             
             pluginHandler.loadPlugins();

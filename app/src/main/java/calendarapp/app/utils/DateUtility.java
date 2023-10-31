@@ -13,30 +13,20 @@ public class DateUtility
     }
     
     /**
-     * Get 7 days starting from the current date.
+     * Get next 7 days starting from the "startDate" that was passed.
      * These dates are displayed in the column of the calendar.
      */
-    public static LocalDate[] getNextSevenDays()
+    public static LocalDate[] getNextSevenDays(LocalDate startDate)
     {
         LocalDate[] columnDates = new LocalDate[7];
         
-        // Starting from the currentDate, get the next seven days to display as column.
-        LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = startDate;
         
-        // First add the current date, then get the next day after until all seven days are retrieved
+        // First add the start date, then get the next day after until all seven days are retrieved
         for(int i = 0; i < 7; i++)
         {
             columnDates[i] = currentDate;
             currentDate = currentDate.plusDays(1);
-        }
-        
-        // [LOG - display each date]
-        System.out.println("+++ Displaying the seven dates:");
-        int date_i = 1;
-        for(LocalDate date : columnDates)
-        {
-            System.out.println(date_i + ". Date = " + date);
-            date_i++;
         }
         
         return columnDates;

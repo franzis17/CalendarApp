@@ -21,7 +21,6 @@ public class CalendarHandler
     
     public CalendarHandler()
     {
-        initialiseTimes();
     }
     
     /**
@@ -31,7 +30,7 @@ public class CalendarHandler
      * It is initialised so that all-day events are in the first row and then the hourly events
      * are automatically ordered from 0 to 23.
      */
-    private void initialiseTimes() throws IllegalArgumentException
+    private void initialiseTimes()
     {
         // Initialise all-day event row
         timeMap.put(ALLDAY_TIME, new EventRow(ALLDAY_TIME));
@@ -46,15 +45,10 @@ public class CalendarHandler
 
     public void addEvent(Event event)
     {
-        System.out.println(">>> Adding an event...");
         if(event == null)
         {
             throw new NullPointerException("Event cannot be null when adding it");
         }
-        System.out.println("+ Event:\n" + 
-            "\t Date = " + event.getDate() + "\n" +
-            "\tTitle = " + event.getTitle()
-        );
         events.add(event);
     }
 
@@ -63,7 +57,8 @@ public class CalendarHandler
      */
     public HashMap<Integer, EventRow> findEventsInGivenDays(LocalDate[] dates)
     {
-        System.out.println(">>> Finding events that are happening in seven days...");
+        timeMap.clear();
+        initialiseTimes();
 
         // Find all events that are happening in the given days
         for(Event event : events)
@@ -85,10 +80,6 @@ public class CalendarHandler
 
         if(eventDate.equals(date))
         {
-            System.out.println("i. Event:\n" + 
-                "\t Date = " + eventDate + "\n" +
-                "\tTitle = " + eventTitle
-            );
             if(event instanceof AllDayEvent)
             {
                 // Add the event in the all-day event row

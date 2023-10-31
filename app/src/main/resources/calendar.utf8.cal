@@ -7,6 +7,10 @@ plugin edu.curtin.calplugins.Repeat
 }
 event 2023-12-25
     all-day "Christmas Day"
+event 2023-11-03
+    all-day "Halloween Party"
+event 2023-11-10
+    all-day "Late Halloween Party"
 plugin edu.curtin.calplugins.Notify { keyA: "X", keyB: "Y", keyC: "Z" }
 
 script "

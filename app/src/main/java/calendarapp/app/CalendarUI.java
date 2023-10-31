@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class CalendarUI
 {
     private CalendarHandler calendar;
+    private LocalDate startDate;
     
     /** Default locale is the system's */
     private Locale locale;
@@ -25,6 +26,7 @@ public class CalendarUI
     public CalendarUI(CalendarHandler calendar)
     {
         this.calendar = calendar;
+        startDate = LocalDate.now();
         locale = Locale.getDefault();
     }
     
@@ -40,7 +42,7 @@ public class CalendarUI
     {
         System.out.println("\n\n");
         // Info to display in the Calendar
-        LocalDate[] sevenDays = DateUtility.getNextSevenDays();
+        LocalDate[] sevenDays = DateUtility.getNextSevenDays(startDate);
         String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
         String[] rowEventTimes = new String[25];          // Max 24 hours in a day + all day hour
         String[][] rowEventContents = new String[25][7];  // 30 rows(hour time), 7 columns(dates)
@@ -147,7 +149,7 @@ public class CalendarUI
         
         while(loop)
         {
-            System.out.println("Please select one of the options below:");
+            System.out.println("\nPlease select one of the options below:");
             for(String option : options)
             {
                 System.out.println("  " + option);
@@ -155,52 +157,55 @@ public class CalendarUI
             
             System.out.print("Enter an option above: ");
             String dateOption = UserInput.getStrInput();
-            System.out.println("Date Option = " + dateOption);
             
+            /*
+              Possibly do an Array of Runnable function and loop that instead, but multiple-if will do
+            */
             if(dateOption.equals(options[0]))
             {
                 // go forward 1 day
-                System.out.println("Shifting one day");
+                startDate = startDate.plusDays(1);
             }
             else if(dateOption.equals(options[1]))
             {
                 // go forward 1 week
-                System.out.println("Shifting one week");
+                startDate = startDate.plusWeeks(1);
             }
             else if(dateOption.equals(options[2]))
             {
                 // go forward 1 month
-                System.out.println("Shifting one month");
+                startDate = startDate.plusMonths(1);
             }
             else if(dateOption.equals(options[3]))
             {
                 // go forward 1 year
-                System.out.println("Shifting one year");
+                startDate = startDate.plusYears(1);
             }
             else if(dateOption.equals(options[4]))
             {
                 // go back 1 day
-                System.out.println("Going back one day");
+                startDate = startDate.minusDays(1);
             }
             else if(dateOption.equals(options[5]))
             {
                 // go back 1 week
-                System.out.println("Going back one week");
+                startDate = startDate.minusWeeks(1);
             }
             else if(dateOption.equals(options[6]))
             {
                 // go back 1 month
-                System.out.println("Going back one month");
+                startDate = startDate.minusMonths(1);
             }
             else if(dateOption.equals(options[7]))
             {
                 // go back 1 year
-                System.out.println("Going back one year");
+                startDate = startDate.minusYears(1);
             }
             else if(dateOption.equals(options[8]))
             {
                 // return to today
                 System.out.println("Returning to today");
+                startDate = LocalDate.now();
             }
             else if(dateOption.equals(options[9]))
             {
@@ -211,6 +216,8 @@ public class CalendarUI
             {
                 System.out.println("Not a valid option.");
             }
+            
+            displayCalendar();
         }
     }
     
