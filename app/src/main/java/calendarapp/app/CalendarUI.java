@@ -1,6 +1,7 @@
 package calendarapp.app;
 
 // package dependencies
+import calendarapp.app.utils.*;
 import calendarapp.terminalgrid.TerminalGrid;
 import calendarapp.app.Event.AllDayEvent;
 import calendarapp.app.Event.HourlyEvent;
@@ -18,22 +19,31 @@ public class CalendarUI
 {
     private CalendarHandler calendar;
     
+    /** Default locale is the system's */
+    private Locale locale;
+    
     public CalendarUI(CalendarHandler calendar)
     {
         this.calendar = calendar;
+        locale = Locale.getDefault();
     }
     
+
     public void display()
     {
+        // Display Calendar first then display menu
+        displayCalendar();
+        displayMainMenu();
+    }
+    
+    public void displayCalendar()
+    {
+        System.out.println("\n\n");
         // Info to display in the Calendar
         LocalDate[] sevenDays = DateUtility.getNextSevenDays();
         String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
         String[] rowEventTimes = new String[25];          // Max 24 hours in a day + all day hour
         String[][] rowEventContents = new String[25][7];  // 30 rows(hour time), 7 columns(dates)
-        
-        
-        addMockEvents();
-        
         
         // Find events happening in seven days
         int[] i_row = { 0 };
@@ -71,7 +81,6 @@ public class CalendarUI
             i_row[0]++;
         });
         
-        
         // Initialise Terminal Grid
         var terminalGrid = TerminalGrid.create();
         terminalGrid.setTerminalWidth(200);
@@ -79,7 +88,143 @@ public class CalendarUI
         // Print out the Calendar
         terminalGrid.print(rowEventContents, rowEventTimes, columnDates);
         System.out.println();
+
+        System.out.println("Locale = " + locale);
     }
+    
+    public void displayMainMenu()
+    {
+        String[] options = {"shift date", "change locale", "quit"};
+        boolean loop = true;
+        
+        while(loop)
+        {
+            try
+            {
+                System.out.println("\nPlease select one of the options below:");
+                for(int i = 0; i < options.length; i++)
+                {
+                    System.out.println("  "+(i+1)+". " + options[i]);
+                }
+
+                System.out.print("Enter number option: ");
+                int numOption = UserInput.getIntInput();
+
+                switch(numOption)
+                {
+                    case 1:
+                        displayDateOptions();
+                        break;
+                    case 2:
+                        changeLocale();
+                        break;
+                    case 3:
+                        loop = false;
+                        break;
+                    default:
+                        System.out.println("Invalid option, only pick the following option.");
+                }
+                
+                displayCalendar();
+            }
+            catch(InputMismatchException e)
+            {
+                System.out.println("ERROR: " + e.getMessage());
+                e.printStackTrace();
+            }
+            catch(IllegalArgumentException e)
+            {
+                System.out.println("ERROR: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void displayDateOptions()
+    {
+        String[] options = {"+d", "+w", "+m", "+y", "-d", "-w", "-m", "-y", "t", "back"};
+        boolean loop = true;
+        
+        while(loop)
+        {
+            System.out.println("Please select one of the options below:");
+            for(String option : options)
+            {
+                System.out.println("  " + option);
+            }
+            
+            System.out.print("Enter an option above: ");
+            String dateOption = UserInput.getStrInput();
+            System.out.println("Date Option = " + dateOption);
+            
+            if(dateOption.equals(options[0]))
+            {
+                // go forward 1 day
+                System.out.println("Shifting one day");
+            }
+            else if(dateOption.equals(options[1]))
+            {
+                // go forward 1 week
+                System.out.println("Shifting one week");
+            }
+            else if(dateOption.equals(options[2]))
+            {
+                // go forward 1 month
+                System.out.println("Shifting one month");
+            }
+            else if(dateOption.equals(options[3]))
+            {
+                // go forward 1 year
+                System.out.println("Shifting one year");
+            }
+            else if(dateOption.equals(options[4]))
+            {
+                // go back 1 day
+                System.out.println("Going back one day");
+            }
+            else if(dateOption.equals(options[5]))
+            {
+                // go back 1 week
+                System.out.println("Going back one week");
+            }
+            else if(dateOption.equals(options[6]))
+            {
+                // go back 1 month
+                System.out.println("Going back one month");
+            }
+            else if(dateOption.equals(options[7]))
+            {
+                // go back 1 year
+                System.out.println("Going back one year");
+            }
+            else if(dateOption.equals(options[8]))
+            {
+                // return to today
+                System.out.println("Returning to today");
+            }
+            else if(dateOption.equals(options[9]))
+            {
+                // go back to main menu
+                loop = false;
+            }
+            else
+            {
+                System.out.println("Not a valid option.");
+            }
+        }
+    }
+    
+    private void changeLocale() throws IllegalArgumentException
+    {
+        System.out.print("Enter locale to change to: ");
+        String localeInput = UserInput.getStrInput();
+        System.out.println("localeInput = " + localeInput);
+        
+        locale = Locale.forLanguageTag(localeInput);
+        
+        // Potentially validate if locale exists
+    }
+    
     
     /**
      * 1. Grab user input: The user enters an input to search for an event.
@@ -110,6 +255,8 @@ public class CalendarUI
     }
     
     
+    
+
     // [ Test Data ]
     
     public void addMockEvents()

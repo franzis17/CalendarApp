@@ -3,13 +3,14 @@ package calendarapp.app;
 import calendarapp.app.testapp.*;
 
 import java.io.*;
+import java.util.*;
 
 public class App
 {
     public static void main(String[] args)
     {
         runCalendarApp(args);
-        //testFileParser(args);
+        // testLocale(args);
     }
     
     public static void runCalendarApp(String[] args)
@@ -29,9 +30,9 @@ public class App
             CalendarUI ui = new CalendarUI(calendarHandler);
             FileParser fileParser = new FileParser(new FileReader(args[0]));
 
+            // Plugins/Scripts
             PluginHandler pluginHandler = new PluginHandler(calendarAPI);
             ScriptHandler scriptHandler = new ScriptHandler(calendarAPI);
-
             fileParser.setCalendarHandler(calendarHandler);
             fileParser.setPluginHandler(pluginHandler);
             fileParser.setScriptHandler(scriptHandler);
@@ -63,7 +64,7 @@ public class App
         }
         catch(Exception e)
         {
-            System.out.println("!!! ERROR: " + e.getMessage());
+            System.out.println("!!! ERROR: General Exception. More info: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -76,5 +77,11 @@ public class App
     public static void testFileParser(String[] args)
     {
         TestFileParser.parseFile(args);
+    }
+    
+    public static void testLocale(String[] args)
+    {
+        TestLocale testLocale = new TestLocale();
+        testLocale.runTest();
     }
 }
