@@ -11,10 +11,13 @@ event 2023-11-03
     all-day "Halloween Party"
 event 2023-11-10
     all-day "Late Halloween Party"
+event 2023-11-20
+    all-day "Friend Party"
 plugin edu.curtin.calplugins.Notify { keyA: "X", keyB: "Y", keyC: "Z" }
 
 script "
-# I'm a Python script!
-print(""hello world"")
-print(1+1)
+#Python script
+from datetime import date
+
+calendarAPI.addAllDayEvent(""2023-10-25"", ""Teachers Day"")
 "

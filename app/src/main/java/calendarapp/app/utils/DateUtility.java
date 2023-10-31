@@ -55,4 +55,27 @@ public class DateUtility
 
         return strDates;
     }
+    
+    /**
+     * String Date must be in the format "yyyy-mm-dd", with all values to be a number
+     */
+    public static LocalDate stringToDate(String dateStr)
+    {
+        LocalDate localDate = null;
+
+        try
+        {
+            String[] dates = dateStr.split("-");
+            int year = Integer.parseInt(dates[0]);
+            int month = Integer.parseInt(dates[1]);
+            int day = Integer.parseInt(dates[2]);
+            localDate = LocalDate.of(year, month, day);
+        }
+        catch(NumberFormatException e)
+        {
+            System.out.println("Error: Date is not a number. Date must be in the format 'yyyy-mm-dd'.");
+        }
+
+        return localDate;
+    }
 }

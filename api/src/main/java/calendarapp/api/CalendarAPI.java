@@ -10,5 +10,11 @@ import java.time.LocalTime;
 public interface CalendarAPI
 {
     void addAllDayEvent(LocalDate date, String title);
+    
+    /**
+     * Allow scripts to enter a string for the date with the same format as normal (yyyy-mm-dd)
+     */
+    void addAllDayEvent(String dateStr, String title);
+    
     void addHourlyEvent(LocalDate date, String title, LocalTime startTime, int durationMins);
 }

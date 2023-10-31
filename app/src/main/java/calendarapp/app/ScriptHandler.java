@@ -20,7 +20,6 @@ public class ScriptHandler
         
         // Sanitise script
         pythonScriptStr = sanitiseScript(pythonScriptStr);
-        System.out.println("Sanitised script, result:\n" + pythonScriptStr);
 
         // Initialise the interpreter
         PythonInterpreter interpreter = new PythonInterpreter();

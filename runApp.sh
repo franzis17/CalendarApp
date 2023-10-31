@@ -16,6 +16,7 @@ run() {
 }
 
 runPlain() {
+    echo ">>> Running gradle project (in plain mode)..."
     ./gradlew --console=plain run --args="./src/main/resources/calendar.utf8.cal"
 }
 
