@@ -17,6 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class CalendarUI
 {
+    private static final Scanner scanner = new Scanner(System.in);
+    
     private CalendarHandler calendar;
     
     /** The pointer to which date the calendar displays */
@@ -39,7 +41,8 @@ public class CalendarUI
         displayCalendar();
         displayMainMenu();
         
-        UserInput.closeScanner();
+        // Ensure to close scanner after user input
+        scanner.close();
     }
     
     public void displayCalendar()
@@ -116,7 +119,7 @@ public class CalendarUI
                 }
 
                 printEnterOption();
-                int numOption = UserInput.getIntInput();
+                int numOption = scanner.nextInt();
 
                 switch(numOption)
                 {
@@ -160,7 +163,7 @@ public class CalendarUI
             }
             
             printEnterOption();
-            String dateOption = UserInput.getStrInput();
+            String dateOption = scanner.nextLine();
             
             /*
               Preferrably do HashMap of options with the key as the option and the value
@@ -231,8 +234,8 @@ public class CalendarUI
         System.out.println("Available translations:\n" + 
             "  - 'en-au' = Australian English (default)\n" +
             "  - 'fl' = Filipino/Tagalog");
-        System.out.print("Enter locale to change to: ");
-        String localeInput = UserInput.getStrInput();
+        System.out.println("Enter locale to change to: ");
+        String localeInput = scanner.next();
         
         locale = Locale.forLanguageTag(localeInput);
         menuBundle = ResourceBundle.getBundle("menu", locale);
@@ -275,7 +278,7 @@ public class CalendarUI
     
     public void printEnterOption()
     {
-        System.out.print(menuBundle.getString("prompt_option") + ": ");
+        System.out.println(menuBundle.getString("prompt_option") + ": ");
     }
     
     
