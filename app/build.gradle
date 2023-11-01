@@ -9,6 +9,7 @@ plugins {
     id 'application'
     // JavaCC From the tutorial example
     id 'com.intershop.gradle.javacc' version '4.0.1'
+    id 'pmd'
 }
 
 repositories {
@@ -64,4 +65,18 @@ application {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+
+compileJava {
+    // pmd
+    options.compilerArgs << "-Xlint:all,-serial"
+}
+
+pmd {
+    consoleOutput = true
+    toolVersion = '6.55.0'
+    rulesMinimumPriority = 5
+    ruleSets = []
+    ruleSetFiles = files('saed-pmd-rules.xml')
 }
