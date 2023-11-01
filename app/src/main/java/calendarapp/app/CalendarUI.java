@@ -107,13 +107,13 @@ public class CalendarUI
         {
             try
             {
-                System.out.println("\n" + menuBundle.getString("choose_an_option") + ":");
+                promptOption();
                 for(int i = 0; i < options.length; i++)
                 {
-                    System.out.println("  "+(i+1)+". " + options[i]);
+                    System.out.println("  "+(i+1)+". " +
+                        menuBundle.getString("main_menu_option." + i));
                 }
 
-                System.out.print("Enter number option: ");
                 int numOption = UserInput.getIntInput();
 
                 switch(numOption)
@@ -153,7 +153,7 @@ public class CalendarUI
         
         while(loop)
         {
-            System.out.println("\nPlease select one of the options below:");
+            promptOption();
             for(String option : options)
             {
                 System.out.println("  " + option);
@@ -228,13 +228,12 @@ public class CalendarUI
     
     private void changeLocale() throws IllegalArgumentException
     {
+        System.out.println("Available translations:\n  - 'fl' = Filipino/Tagalog");
         System.out.print("Enter locale to change to: ");
         String localeInput = UserInput.getStrInput();
-        System.out.println("localeInput = " + localeInput);
         
         locale = Locale.forLanguageTag(localeInput);
         menuBundle = ResourceBundle.getBundle("menu", locale);
-        
     }
     
     
@@ -264,6 +263,14 @@ public class CalendarUI
             // Output Event details
             System.out.println();
         }
+    }
+    
+    
+
+    public void promptOption()
+    {
+        System.out.println("\n" + menuBundle.getString("choose_an_option") + ":");
+        System.out.println(menuBundle.getString("prompt_option") + ":");
     }
     
     

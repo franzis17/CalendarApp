@@ -20,3 +20,9 @@ arg can be one of the following:
 Change the filepath as you wish.
 2. If you want to get rid of the pesky progress bar, run the following in plain mode.
 run command:  ./gradlew --console=plain run --args="./src/main/resources/calendar.utf8.cal"
+
+
+--------------[ TRANSLATIONS ]--------------
+
+Added filipino language as the another language of the app.
+To use the filipino language, select numeric option of "change locale" and type "fl" as the locale.
