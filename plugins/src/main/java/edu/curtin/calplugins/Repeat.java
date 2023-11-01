@@ -19,7 +19,7 @@ public class Repeat implements PluginsAPI
 {
     private final static int ONE_YEAR = 365;
 
-    private HashMap<String, String> arguments = new HashMap<>();
+    private Map<String, String> arguments = new HashMap<>();
     
     private CalendarAPI calendarAPI;
 
@@ -132,15 +132,17 @@ public class Repeat implements PluginsAPI
     
     public void repeatedlyAddEvents() throws IllegalArgumentException
     {
-        // must have date, title, and repeat
-        validateRepeatEvent();
+        // must have at least a date, title, and repeat for event to be considered an event
+        validateEvent();
         
         if(isAllDayEvent())
         {
             repeatedlyAddAllDayEvent();
         }
-        
-        // repeatedly add hourly events
+        else
+        {
+            repeatedlyAddHourlyEvent();
+        }
     }
     
     public void repeatedlyAddAllDayEvent()
@@ -148,7 +150,7 @@ public class Repeat implements PluginsAPI
         // Add the very first event
         calendarAPI.addAllDayEvent(startDate, title);
 
-        // Add the next date, depending on how many days provided, do this for a year
+        // Add date every 'n' days
         int nextDay = repeat;
         LocalDate newDate = startDate;
         while(nextDay < ONE_YEAR)
@@ -160,24 +162,24 @@ public class Repeat implements PluginsAPI
         }
     }
     
-    // public void addHourlyEvent(
-    //     LocalDate date, String title, LocalTime startTime,
-    //     int durationMins, int repeatDays
-    // ){
-    //     // Add the very first event
-    //     calendarAPI.addHourlyEvent(date, title, startTime, durationMins);
+    public void repeatedlyAddHourlyEvent()
+    {
+        validateHourlyEvent();
+        
+        // Add the very first event
+        calendarAPI.addHourlyEvent(startDate, title, startTime, duration);
 
-    //     // Add the next date, depending on how many days provided, do this for a year
-    //     int nextDay = repeatDays;
-    //     LocalDate newDate = date;
-    //     while(nextDay < ONE_YEAR)
-    //     {
-    //         // Repeat adding of the hourly event for a year
-    //         newDate = date.plusDays(nextDay);
-    //         calendarAPI.addHourlyEvent(newDate, title, startTime, durationMins);
-    //         nextDay = nextDay + repeatDays;
-    //     }
-    // }
+        // Add date every 'n' days
+        int nextDay = repeat;
+        LocalDate newDate = startDate;
+        while(nextDay < ONE_YEAR)
+        {
+            // Repeat adding of the hourly event for a year
+            newDate = startDate.plusDays(nextDay);
+            calendarAPI.addHourlyEvent(newDate, title, startTime, duration);
+            nextDay = nextDay + repeat;
+        }
+    }
     
     
     // [ Validations ]
@@ -185,7 +187,7 @@ public class Repeat implements PluginsAPI
     /**
      * Must have date, title, and repeat arguments. Without these, then do not add events.
      */
-    public void validateRepeatEvent() throws IllegalArgumentException
+    private void validateEvent() throws IllegalArgumentException
     {
         if(startDate == null)
         {
@@ -201,14 +203,24 @@ public class Repeat implements PluginsAPI
         }
     }
     
+    /**
+     * Without start time, then do not create hourly event
+     */
+    private void validateHourlyEvent() throws IllegalArgumentException
+    {
+        if(startTime == null)
+        {
+            throw new IllegalArgumentException("StartTime was not provided in Repeat Plugin.");
+        }
+    }
+    
     
     /**
      * If there is no startTime field, then presume it is an "AllDayEvent"
      */
     private boolean isAllDayEvent()
     {
-        String startTime = arguments.get(START_TIME);
-        if(startTime.isEmpty())
+        if(startTime == null)
         {
             return true;
         }

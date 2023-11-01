@@ -4,7 +4,15 @@ plugin edu.curtin.calplugins.Repeat
 {
     title: "breathe",
     startDate: "2023-11-03",
-    repeat: "5"
+    repeat: "1"
+}
+plugin edu.curtin.calplugins.Repeat
+{
+    title: "eat breakfast",
+    startDate: "2023-11-03",
+    startTime: "08:00:00",
+    duration: "10",
+    repeat: "2"
 }
 event 2023-12-25
     all-day "Christmas Day"

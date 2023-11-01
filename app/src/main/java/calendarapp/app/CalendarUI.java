@@ -225,6 +225,7 @@ public class CalendarUI
                 System.out.println("Not a valid option.");
             }
             
+            // After shifting date, display calendar.
             displayCalendar();
         }
     }
