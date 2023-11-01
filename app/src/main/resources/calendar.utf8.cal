@@ -22,7 +22,7 @@ event 2023-11-10
     all-day "Late Halloween Party"
 event 2023-11-20
     all-day "Friend Party"
-plugin edu.curtin.calplugins.Notify { keyA: "X", keyB: "Y", keyC: "Z" }
+plugin edu.curtin.calplugins.Notify { text: "exercise" }
 
 script "
 calendarAPI.addAllDayEvent(""2023-10-25"", ""Teachers Day"")
