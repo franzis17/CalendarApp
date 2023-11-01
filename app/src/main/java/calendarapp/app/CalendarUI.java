@@ -212,7 +212,6 @@ public class CalendarUI
             else if(dateOption.equals(options[8]))
             {
                 // return to today
-                System.out.println("Returning to today");
                 startDate = LocalDate.now();
             }
             else if(dateOption.equals(options[9]))

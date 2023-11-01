@@ -2,7 +2,7 @@ event 2023-11-01 15:00:00 90 "Upload SEC Assignment 2 submission"
 event 2023-11-02 08:30:45 45 "Meeting 2"
 plugin edu.curtin.calplugins.Repeat
 {
-    title: "breathe",
+    title: "exercise",
     startDate: "2023-11-03",
     repeat: "1"
 }
