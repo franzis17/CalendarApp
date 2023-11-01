@@ -3,7 +3,6 @@ package calendarapp.app;
 import calendarapp.app.testapp.*;
 
 import java.io.*;
-import java.util.*;
 
 public class App
 {
@@ -45,25 +44,13 @@ public class App
         {
             System.out.println("Error: " + e.getMessage());
         }
-        catch(NullPointerException e)
-        {
-            System.out.println("!!! ERROR: Ran in to null problem. More: " + e.getMessage());
-            e.printStackTrace();
-        }
         catch(ParseException e)
         {
-            System.out.println("!!! ERROR: Failed to parse file.");
-            e.printStackTrace();
+            System.out.println("Error: Failed to parse file. More info: " + e.getMessage());
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("!!! ERROR: File not found.");
-            e.printStackTrace();
-        }
-        catch(Exception e)
-        {
-            System.out.println("!!! ERROR: General Exception. More info: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error: File not found. More info: " + e.getMessage());
         }
     }
     

@@ -4,17 +4,22 @@ import java.util.*;
 
 public class UserInput
 {
+    private static final Scanner SCANNER = new Scanner(System.in);
+    
     public static String getStrInput()
     {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input = SCANNER.nextLine();
         return input;
     }
     
     public static int getIntInput() throws InputMismatchException
     {
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
-        return input;
+        int numInput = SCANNER.nextInt();
+        return numInput;
+    }
+    
+    public static void closeScanner()
+    {
+        SCANNER.close();
     }
 }

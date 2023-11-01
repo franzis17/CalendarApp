@@ -7,7 +7,7 @@ public class DateUtility
 {
     private static DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     
-    public static String getStrCurrentDate_dmyFormat()
+    public static String getStrCurrentDateInDMYFormat()
     {
         return LocalDate.now().format(dmyFormat);
     }

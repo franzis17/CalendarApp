@@ -10,7 +10,7 @@ import calendarapp.app.Event.HourlyEvent;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Displays a calendar that shows 7 days from now and events happening within the days.
@@ -38,11 +38,13 @@ public class CalendarUI
         // Display Calendar first then display menu
         displayCalendar();
         displayMainMenu();
+        
+        UserInput.closeScanner();
     }
     
     public void displayCalendar()
     {
-        System.out.println("\n\n");
+        System.out.println("\n");
         // Info to display in the Calendar
         LocalDate[] sevenDays = DateUtility.getNextSevenDays(startDate);
         String[] columnDates = DateUtility.formatDateToDayMonthYear(sevenDays);
@@ -50,12 +52,12 @@ public class CalendarUI
         String[][] rowEventContents = new String[25][7];  // 30 rows(hour time), 7 columns(dates)
         
         // Find events happening in seven days
-        int[] i_row = { 0 };
-        HashMap<Integer, EventRow> timeMap = calendar.findEventsInGivenDays(sevenDays);
+        AtomicInteger rowIdx = new AtomicInteger(0);  // allows int to be used inside lambda
+        Map<Integer, EventRow> timeMap = calendar.findEventsInGivenDays(sevenDays);
         timeMap.forEach((timeKey, eventRowValue) ->
         {
             int eventTime = eventRowValue.getTime();
-            String timeToDisplay = "";
+            String timeToDisplay;
             
             // Format the time to either AM or PM
             if (eventTime == -1)
@@ -80,9 +82,10 @@ public class CalendarUI
             }
 
             String[] eventsArr = eventRowValue.getEvents();
-            rowEventTimes[i_row[0]] = timeToDisplay;
-            rowEventContents[i_row[0]] = eventsArr;
-            i_row[0]++;
+            
+            rowEventTimes[rowIdx.get()] = timeToDisplay;
+            rowEventContents[rowIdx.get()] = eventsArr;
+            rowIdx.incrementAndGet();
         });
         
         // Initialise Terminal Grid
@@ -122,25 +125,23 @@ public class CalendarUI
                         break;
                     case 2:
                         changeLocale();
+                        displayCalendar();
                         break;
                     case 3:
                         loop = false;
                         break;
                     default:
                         System.out.println("Invalid option, only pick the following option.");
+                        break;
                 }
-                
-                displayCalendar();
             }
             catch(InputMismatchException e)
             {
-                System.out.println("ERROR: " + e.getMessage());
-                e.printStackTrace();
+                System.out.println("Error: Ensure input is a number. More info: " + e.getMessage());
             }
             catch(IllegalArgumentException e)
             {
-                System.out.println("ERROR: " + e.getMessage());
-                e.printStackTrace();
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }

@@ -19,14 +19,17 @@ public class ScriptHandler
         // Sanitise script
         pythonScriptStr = sanitiseScript(pythonScriptStr);
 
-        // Initialise the interpreter
-        PythonInterpreter interpreter = new PythonInterpreter();
-
-        // Bind the API to the script environment
-        interpreter.set("calendarAPI", calendarAPI);
-
-        // Run the script
-        interpreter.exec(pythonScriptStr);
+        // Pass API and run script
+        try(PythonInterpreter interpreter = new PythonInterpreter();)
+        {
+            interpreter.set("calendarAPI", calendarAPI);
+            interpreter.exec(pythonScriptStr);
+        }
+        catch(PyException e)
+        {
+            System.out.println("Error: error occured when executing Python script. " +
+                "More info: " + e.getMessage());
+        }
     }
     
     /**

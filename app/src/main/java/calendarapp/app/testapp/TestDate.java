@@ -4,6 +4,7 @@ import calendarapp.app.utils.*;
 
 import java.time.LocalDate;
 
+@SuppressWarnings("PMD")
 public class TestDate
 {
     public static void runTest()

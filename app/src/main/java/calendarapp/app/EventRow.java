@@ -54,7 +54,7 @@ public class EventRow
     /**
      * Time range must be (-1 to 24). Time of -1 is registered for all-day events
      */
-    public boolean invalidTime(int timeToValidate)
+    private boolean invalidTime(int timeToValidate)
     {
         if(timeToValidate < MIN_TIME || timeToValidate > MAX_TIME)
         {

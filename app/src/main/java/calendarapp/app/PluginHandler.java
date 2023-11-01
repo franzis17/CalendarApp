@@ -28,11 +28,11 @@ public class PluginHandler
         pluginClasspaths.add(pluginClasspath);
     }
     
-    public void addPlugin(PluginsAPI plugin) throws NullPointerException
+    public void addPlugin(PluginsAPI plugin) throws IllegalArgumentException
     {
         if(plugin == null)
         {
-            throw new NullPointerException("plugin cannot be null when adding it to PluginHandler.");
+            throw new IllegalArgumentException("plugin cannot be null when adding it to PluginHandler.");
         }
         plugins.add(plugin);
     }
@@ -46,22 +46,20 @@ public class PluginHandler
             Class<?> pluginClass = Class.forName(classpath);
             PluginsAPI pluginObj = (PluginsAPI)pluginClass.getConstructor().newInstance();
             plugin = pluginObj;
-
-            plugin.start(calendarAPI);
-
-            plugins.add(plugin);
+            
+            if(plugin != null)
+            {
+                plugin.start(calendarAPI);
+                plugins.add(plugin);
+            }
         }
         catch(ClassNotFoundException e)
         {
             System.out.println("Error: No classes found with the name '"+classpath+"'");
         }
-        catch(RuntimeException e)
-        {
-            e.printStackTrace();
-        }
         catch(ReflectiveOperationException e)
         {
-            e.printStackTrace();
+            System.out.println("Error: Reflection error. More info: " + e.getMessage());
         }
         
         return plugin;
@@ -78,33 +76,7 @@ public class PluginHandler
         // Load all plugins using Reflection
         for(String pluginClasspath : pluginClasspaths)
         {
-            System.out.println("> Loading plugin: " + pluginClasspath);
-            try
-            {
-                // IMPORTANT: Class names passed inside `Class.forName()` MUST BE a *classpath*
-                Class<?> pluginClass = Class.forName(pluginClasspath);
-                PluginsAPI pluginObj = (PluginsAPI)pluginClass.getConstructor().newInstance();
-                
-                if(pluginObj != null)
-                {
-                    plugins.add(pluginObj);
-                    pluginObj.start(calendarAPI);
-                    System.out.println("Added+Started " + pluginClasspath + " to the list of plugins.");
-                }
-            }
-            catch(ClassNotFoundException e)
-            {
-                System.out.println("!!! ERROR: " + e.getMessage());
-                e.printStackTrace();
-            }
-            catch(RuntimeException e)
-            {
-                e.printStackTrace();
-            }
-            catch(ReflectiveOperationException e)
-            {
-                e.printStackTrace();
-            }
+            loadPlugin(pluginClasspath);
         }
     }
 }

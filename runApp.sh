@@ -8,6 +8,11 @@ clean() {
     ./gradlew clean
 }
 
+check() {
+    echo ">>> Checking PMD violations..."
+    ./gradlew check
+}
+
 build() {
     echo ">>> Building gradle project..."
     ./gradlew build
@@ -34,6 +39,9 @@ else
             -clean)
                 clean
                 ;;
+            -check)
+                check
+                ;;
             -b)
                 build
                 ;;
@@ -41,16 +49,6 @@ else
                 run
                 ;;
             -rp)
-                runPlain
-                ;;
-            -cbr)
-                clean
-                build
-                run
-                ;;
-            -cbrp)
-                clean
-                build
                 runPlain
                 ;;
             *)

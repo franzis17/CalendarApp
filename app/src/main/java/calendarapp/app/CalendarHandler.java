@@ -7,7 +7,6 @@ import calendarapp.app.Event.HourlyEvent;
 // external dependencies
 import java.util.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
  * Contains all events in the Calendar, and operations these events.
@@ -17,7 +16,7 @@ public class CalendarHandler
     private static final int ALLDAY_TIME = -1;
     
     private List<Event> events = new ArrayList<>();
-    private HashMap<Integer, EventRow> timeMap = new HashMap<>();
+    private Map<Integer, EventRow> timeMap = new HashMap<>();
     
     public CalendarHandler()
     {
@@ -43,11 +42,11 @@ public class CalendarHandler
     }
 
 
-    public void addEvent(Event event)
+    public void addEvent(Event event) throws IllegalArgumentException
     {
         if(event == null)
         {
-            throw new NullPointerException("Event cannot be null when adding it");
+            throw new IllegalArgumentException("Event cannot be null when adding it");
         }
         events.add(event);
     }
@@ -55,7 +54,7 @@ public class CalendarHandler
     /**
      * Check if there are any events within the 7 days requested.
      */
-    public HashMap<Integer, EventRow> findEventsInGivenDays(LocalDate[] dates)
+    public Map<Integer, EventRow> findEventsInGivenDays(LocalDate[] dates)
     {
         timeMap.clear();
         initialiseTimes();
@@ -121,20 +120,5 @@ public class CalendarHandler
             }
         }
         return null;
-    }
-    
-    
-    // [Validations]
-
-    /**
-     * If there is no startTime field, then presume it is an "AllDayEvent"
-     */
-    private boolean isAllDayEvent(String startTime)
-    {
-        if(startTime.isEmpty())
-        {
-            return true;
-        }
-        return false;
     }
 }

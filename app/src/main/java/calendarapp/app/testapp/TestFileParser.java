@@ -17,12 +17,10 @@ public class TestFileParser
         catch(ParseException e)
         {
             System.out.println("!!! ERROR: Failed to parse file.");
-            e.printStackTrace();
         }
         catch(FileNotFoundException e)
         {
             System.out.println("!!! ERROR: File not found.");
-            e.printStackTrace();
         }
     }
 }

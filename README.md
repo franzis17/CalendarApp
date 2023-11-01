@@ -11,12 +11,14 @@ Script is just for convenience. If you want to parse another file, change argume
 
 ./runApp.sh <arg>
 
-arg can be one of the following:
-    -clean  = clean gradle project
-    -b      = build gradle project
-    -r      = run gradle project
-    -rp     = run gradle project in plain mode, which removes the annoying progress bar
+arg can be one of the following (any amount):
+  -clean  = clean gradle project
+  -b      = build gradle project
+  -r      = run gradle project
+  -rp     = run gradle project in plain mode, which removes the annoying progress bar
 
+Example - clean project and run in plain mode:
+  ./runApp.sh -clean -rp
 
 ## [Run method 2: Running the app via ./gradlew]
 

@@ -4,11 +4,16 @@ import calendarapp.app.*;
 import calendarapp.api.*;
 
 import java.io.*;
-import java.util.*;
+//import java.util.*;
 
+/**
+ * Not a part of the main app.
+ * This is used for testing new functionalities.
+ */
+@SuppressWarnings("PMD")
 public class TestMain
 {
-    private String[] args;
+    private String[] args;  //NOPMD - not a part of the main app
     
     private CalendarHandler calendarHandler;
     private CalendarControls calendarAPI;
@@ -24,9 +29,9 @@ public class TestMain
         this.args = args;
 
         // Create initial calendar objects
-        calendarHandler = new CalendarHandler();
-        calendarAPI = new CalendarControls(calendarHandler);
-        ui = new CalendarUI(calendarHandler);
+        // calendarHandler = new CalendarHandler();
+        // calendarAPI = new CalendarControls(calendarHandler);
+        // ui = new CalendarUI(calendarHandler);
 
         // Plugins/Scripts
         pluginHandler = new PluginHandler(calendarAPI);
