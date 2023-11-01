@@ -1,15 +1,22 @@
-The Gradle Wrapper
-==================
+[How to run app]
+Two ways you can run the app: script (runApp.sh) or directly via ./gradlew.
+Script is just for convenience. Change argument (file location) via the script.
 
-** Delete this file once you understand. **
+[Running the app via runApp.sh script]
+1. Change permission of script: chmod+x runApp.sh
+2. If you want to read another file, edit `runApp.sh` script. (Preferrably put file in directory: app > src > main > resources)
+3. Run the script in terminal as below:
 
-This is a standalone copy of the "Gradle wrapper", which you can use to initialise a new Gradle
-project, even if you don't have Gradle installed. Rename the main "gradle_wrapper" directory (not 
-the subdirectories) so that it reflects your project, then run:
+./runApp.sh <arg>
 
-$ ./gradlew init
+arg can be one of the following:
+    -clean  = clean gradle project
+    -b      = build gradle project
+    -r      = run gradle project
+    -rp     = run gradle project in plain mode, which removes the annoying progress bar
 
-You can change the version of Gradle being used by editing the file
-"gradle/wrapper/gradle-wrapper.properties". You should see "gradle-X.Y.Z-bin.zip", and you can
-simply change this version number to any other Gradle version. You can find the latest Gradle
-release, see https://gradle.org/releases/.
+[Running the app via ./gradlew]
+1. run command:  ./gradlew run --args="./src/main/resources/calendar.utf8.cal"
+Change the filepath as you wish.
+2. If you want to get rid of the pesky progress bar, run the following in plain mode.
+run command:  ./gradlew --console=plain run --args="./src/main/resources/calendar.utf8.cal"

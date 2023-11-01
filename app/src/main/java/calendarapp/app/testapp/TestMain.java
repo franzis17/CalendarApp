@@ -36,7 +36,8 @@ public class TestMain
     public void startTest()
     {
         //testLoadPlugin();
-        testDate();
+        //testDate();
+        testIntl();
     }
     
     public void testLoadPlugin()
@@ -56,9 +57,9 @@ public class TestMain
         TestFileParser.parseFile(args);
     }
     
-    public void testLocale(String[] args)
+    public void testIntl()
     {
-        TestLocale testLocale = new TestLocale();
-        testLocale.runTest();
+        TestIntl intl = new TestIntl();
+        intl.runTest();
     }
 }

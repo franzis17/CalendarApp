@@ -4,7 +4,10 @@ import java.util.*;
 import java.text.NumberFormat;
 import java.time.*;
 
-public class TestLocale
+/**
+ * Internationalisation features to test
+ */
+public class TestIntl
 {
     public void runTest()
     {
@@ -22,5 +25,10 @@ public class TestLocale
         
         System.out.println("OG num = " + ogNum);
         System.out.println("Formatted num = " + fmtNum);
+    }
+    
+    public void testTranslation()
+    {
+        
     }
 }

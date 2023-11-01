@@ -1,5 +1,8 @@
 #!/bin/bash
 
+calendarFile="./src/main/resources/calendar.utf8.cal"
+
+
 clean() {
     echo ">>> Cleaning gradle build..."
     ./gradlew clean
@@ -12,16 +15,17 @@ build() {
 
 run() {
     echo ">>> Running gradle project..."
-    ./gradlew run --args="./src/main/resources/calendar.utf8.cal"
+    ./gradlew run --args="$calendarFile"
 }
 
 runPlain() {
     echo ">>> Running gradle project (in plain mode)..."
-    ./gradlew --console=plain run --args="./src/main/resources/calendar.utf8.cal"
+    ./gradlew --console=plain run --args="$calendarFile"
 }
 
 
-if [ "$#" -eq 0 ]; then
+# Argument checker
+if [[ "$#" -eq 0 ]]; then
     echo "No arguments provided"
 else
     # Loop through the script's arguments
