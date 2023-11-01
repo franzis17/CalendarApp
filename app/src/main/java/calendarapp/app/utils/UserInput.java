@@ -8,7 +8,6 @@ public class UserInput
     {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        //scanner.close();
         return input;
     }
     
@@ -16,7 +15,6 @@ public class UserInput
     {
         Scanner scanner = new Scanner(System.in);
         int input = scanner.nextInt();
-        //scanner.close();
         return input;
     }
 }

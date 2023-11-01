@@ -23,15 +23,13 @@ public class CalendarUI
     private LocalDate startDate;
     
     /** Default locale is the system's */
-    private Locale locale;
-    private ResourceBundle menuBundle;
+    private Locale locale = Locale.getDefault();
+    private ResourceBundle menuBundle = ResourceBundle.getBundle("menu", locale);
     
     public CalendarUI(CalendarHandler calendar)
     {
         this.calendar = calendar;
         startDate = LocalDate.now();
-        locale = Locale.getDefault();
-        menuBundle = ResourceBundle.getBundle("menu", locale);
     }
     
 
@@ -107,13 +105,14 @@ public class CalendarUI
         {
             try
             {
-                promptOption();
+                printChooseAnOption();
                 for(int i = 0; i < options.length; i++)
                 {
                     System.out.println("  "+(i+1)+". " +
                         menuBundle.getString("main_menu_option." + i));
                 }
 
+                printEnterOption();
                 int numOption = UserInput.getIntInput();
 
                 switch(numOption)
@@ -153,13 +152,13 @@ public class CalendarUI
         
         while(loop)
         {
-            promptOption();
+            printChooseAnOption();
             for(String option : options)
             {
                 System.out.println("  " + option);
             }
             
-            System.out.print("Enter an option above: ");
+            printEnterOption();
             String dateOption = UserInput.getStrInput();
             
             /*
@@ -228,7 +227,9 @@ public class CalendarUI
     
     private void changeLocale() throws IllegalArgumentException
     {
-        System.out.println("Available translations:\n  - 'fl' = Filipino/Tagalog");
+        System.out.println("Available translations:\n" + 
+            "  - 'en-au' = Australian English (default)\n" +
+            "  - 'fl' = Filipino/Tagalog");
         System.out.print("Enter locale to change to: ");
         String localeInput = UserInput.getStrInput();
         
@@ -266,16 +267,17 @@ public class CalendarUI
     }
     
     
-
-    public void promptOption()
+    public void printChooseAnOption()
     {
         System.out.println("\n" + menuBundle.getString("choose_an_option") + ":");
-        System.out.println(menuBundle.getString("prompt_option") + ":");
+    }
+    
+    public void printEnterOption()
+    {
+        System.out.print(menuBundle.getString("prompt_option") + ": ");
     }
     
     
-    
-
     // [ Test Data ]
     
     public void addMockEvents()

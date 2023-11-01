@@ -43,8 +43,7 @@ public class App
         }
         catch(IllegalArgumentException e)
         {
-            System.out.println("!!! Illegal arg: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
         }
         catch(NullPointerException e)
         {
