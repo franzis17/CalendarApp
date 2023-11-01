@@ -11,7 +11,8 @@ public class TestIntl
 {
     public void runTest()
     {
-        arabicNumFormat();
+        //arabicNumFormat();
+        testTranslation();
     }
     
     public void arabicNumFormat()
@@ -29,6 +30,13 @@ public class TestIntl
     
     public void testTranslation()
     {
-        
+        System.out.println(">>> Testing translations...");
+
+        Locale locale = Locale.getDefault();
+        System.out.println("Locale = " + locale);
+
+        ResourceBundle bundle = ResourceBundle.getBundle("menu", locale);
+        System.out.println(bundle.getString("hello"));
+        System.out.println(bundle.getString("world"));
     }
 }

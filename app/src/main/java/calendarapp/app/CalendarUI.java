@@ -18,16 +18,20 @@ import java.time.format.DateTimeFormatter;
 public class CalendarUI
 {
     private CalendarHandler calendar;
+    
+    /** The pointer to which date the calendar displays */
     private LocalDate startDate;
     
     /** Default locale is the system's */
     private Locale locale;
+    private ResourceBundle menuBundle;
     
     public CalendarUI(CalendarHandler calendar)
     {
         this.calendar = calendar;
         startDate = LocalDate.now();
         locale = Locale.getDefault();
+        menuBundle = ResourceBundle.getBundle("menu", locale);
     }
     
 
@@ -103,7 +107,7 @@ public class CalendarUI
         {
             try
             {
-                System.out.println("\nPlease select one of the options below:");
+                System.out.println("\n" + menuBundle.getString("choose_an_option") + ":");
                 for(int i = 0; i < options.length; i++)
                 {
                     System.out.println("  "+(i+1)+". " + options[i]);
@@ -159,7 +163,8 @@ public class CalendarUI
             String dateOption = UserInput.getStrInput();
             
             /*
-              Possibly do an Array of Runnable function and loop that instead, but multiple-if will do
+              Preferrably do HashMap of options with the key as the option and the value
+              is a Runnable function.
             */
             if(dateOption.equals(options[0]))
             {
@@ -228,8 +233,8 @@ public class CalendarUI
         System.out.println("localeInput = " + localeInput);
         
         locale = Locale.forLanguageTag(localeInput);
+        menuBundle = ResourceBundle.getBundle("menu", locale);
         
-        // Potentially validate if locale exists
     }
     
     
